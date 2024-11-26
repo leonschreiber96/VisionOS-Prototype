@@ -14,20 +14,8 @@ struct Vision_OS_PrototypeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ChessBoardView()
                 .environment(appModel)
         }
-
-        ImmersiveSpace(id: appModel.immersiveSpaceID) {
-            ImmersiveView()
-                .environment(appModel)
-                .onAppear {
-                    appModel.immersiveSpaceState = .open
-                }
-                .onDisappear {
-                    appModel.immersiveSpaceState = .closed
-                }
-        }
-        .immersionStyle(selection: .constant(.mixed), in: .mixed)
      }
 }
