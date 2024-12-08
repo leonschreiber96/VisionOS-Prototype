@@ -26,7 +26,8 @@ class ChessBoardEntity : Entity {
         
         self.addChild(chessBoard)
         
-        update()
+        print("Will now 'update' from init function.")
+        update(scale: SIMD3(repeating: 0.01), position: .zero)
     }
     
     // MARK: - Updates
@@ -41,14 +42,15 @@ class ChessBoardEntity : Entity {
     ///     specifically for the Moon.
     ///   - animateUpdates: A Boolean that indicates whether changes to certain
     ///     configuration values should be animated.
-    func update() {
+    func update(scale: SIMD3<Float>, position: SIMD3<Float>) {
 
         // Scale and position the entire entity.
         move(
             to: Transform(
-                scale: SIMD3(repeating: 0.01),
-                rotation: .init(angle: 0, axis: [0, 1, 0]),
-                translation: .zero),
+                scale: scale,
+//                rotation: .init(angle: 0.2, axis: [0, 1, 0]),
+                translation: position
+            ),
             relativeTo: parent)
     }
 }

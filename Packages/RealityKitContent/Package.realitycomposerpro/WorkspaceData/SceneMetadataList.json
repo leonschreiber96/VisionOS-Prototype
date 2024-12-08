@@ -35,6 +35,73 @@
       }
     ]
   },
+  "93347035-2031-4D6D-927B-2E0BF648F258" : {
+    "objectMetadataList" : [
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root",
+        "ChessBoard"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root",
+        "ChessBoard",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
   "AF09ED6F-1707-48FD-8720-65B998362C09" : {
     "objectMetadataList" : [
       [
@@ -69,7 +136,8 @@
     "objectMetadataList" : [
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root"
+        "Root",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -77,8 +145,7 @@
       },
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root",
-        "GridMaterial"
+        "Root"
       ],
       {
         "isExpanded" : true,
