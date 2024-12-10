@@ -13,9 +13,9 @@ struct Vision_OS_PrototypeApp: App {
     @State private var appModel = AppModel()
 
     var body: some Scene {
-        WindowGroup {
+        WindowGroup("ChessGameView"){
             ChessGameView()
                 .environment(appModel)
         }
-     }
+    }
 }

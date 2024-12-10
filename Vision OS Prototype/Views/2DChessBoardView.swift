@@ -29,7 +29,7 @@ struct ChessBoardView: View {
                     ForEach(0..<8, id: \.self) { col in
                         Rectangle()
                             .fill((row + col) % 2 == 0 ? Color.lightWood : Color.darkWood) // Helles und dunkles Holz
-                            .frame(width: 50, height: 50)
+                            .frame(width: 35, height: 35)
                             .background(
                                 Image((row + col) % 2 == 0 ? "lightWoodTexture" : "darkWoodTexture") // Texturen
                                     .resizable()
@@ -38,7 +38,7 @@ struct ChessBoardView: View {
                             .clipped() // Texturen zuschneiden
                             .overlay(
                                 Text(chessBoard.board[row][col]?.type ?? "") // Figuren hinzufügen
-                                    .font(.system(size: 30))
+                                    .font(.system(size: 35))
                                     .foregroundColor(chessBoard.board[row][col]?.color == "white" ? .black : .white)
                             )
                     }
