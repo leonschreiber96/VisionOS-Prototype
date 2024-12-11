@@ -49,7 +49,6 @@ private struct PlacementGesturesModifier: ViewModifier {
             .simultaneousGesture(DragGesture(minimumDistance: 0.0, coordinateSpace: .global)
                 .handActivationBehavior(.pinch)
                 .onChanged { value in
-                    print("CHANGED")
                     if let startPosition {
                         let delta = value.location3D - value.startLocation3D
                         position = startPosition + delta
@@ -61,11 +60,6 @@ private struct PlacementGesturesModifier: ViewModifier {
                     startPosition = nil
                 }
             )
-        
-        
-            .onTapGesture {
-                print("Tapped")
-            }
 
             // Enable people to scale the model within certain bounds.
             .simultaneousGesture(MagnifyGesture()

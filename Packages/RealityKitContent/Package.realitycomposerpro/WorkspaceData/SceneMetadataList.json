@@ -39,6 +39,39 @@
     "objectMetadataList" : [
       [
         "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
         "Root",
         "ChessBoard"
       ],
@@ -68,7 +101,33 @@
       },
       [
         "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
         "Root",
+        "ChessBoard",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
         "ChessBoard",
         "Meshes",
         "Sketchfab_model",
@@ -92,9 +151,37 @@
       },
       [
         "93347035-2031-4D6D-927B-2E0BF648F258",
-        "Root",
         "ChessBoard",
-        "Meshes"
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cylinder_043_0"
+      ],
+      {
+        "disallowsFraming" : false,
+        "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cylinder_038_5"
+      ],
+      {
+        "disallowsFraming" : false,
+        "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model"
       ],
       {
         "isExpanded" : true,

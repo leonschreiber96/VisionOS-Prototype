@@ -23,23 +23,32 @@ struct ChessBoard3D: View {
             chessBoard3DEntity.components.set(InputTargetComponent())
             chessBoard3DEntity.generateCollisionShapes(recursive: true)
 
-            print(chessBoard3DEntity.children)
-            print(chessBoard3DEntity.visualBounds(relativeTo: nil))
+            let pieces = chessBoard3DEntity.children[0].children[0].children[0]
+                .children[0].children[0].children[0]
+            
+            var counter = 0
+            
+            let rook = pieces.children[0].clone(recursive: true)
+            
+            pieces.children.forEach { piece in
+                if (counter < 5) {
+                    piece.removeFromParent()
+                }
+                counter += 1
+            }
+            
+            pieces.addChild(rook)
+            
+//            pieces.children[0].transform.translation += SIMD3<Float>(repeating: 0.5)
+            
+//            translateMesh(entity: chessBoard3DEntity, meshName: "Cylinder_043_0", translation: SIMD3<Float>(repeating: 0.5))
 
         } update: { content in
-            print("Updating ChessBoard3D")
             chessBoard3DEntity?.update(
                 scale: SIMD3(repeating: 0.05), position: .zero
             )
         }
     }
-    
-    private func createSphere(radius: Float, color: UIColor) -> ModelEntity {
-            let sphereMesh = MeshResource.generateSphere(radius: radius)
-            let material = SimpleMaterial(color: color, isMetallic: false)
-            let sphereEntity = ModelEntity(mesh: sphereMesh, materials: [material])
-            return sphereEntity
-        }
 }
 
 #Preview { ChessBoard3D() }
