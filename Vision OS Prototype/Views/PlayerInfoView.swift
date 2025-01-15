@@ -11,6 +11,16 @@ import SwiftUI
 struct PlayerInfoView: View {
     let player1: Player
     let player2: Player
+    
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    
+    @Environment(\.supportsMultipleWindows) private var supportsMultipleWindows
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissWindow) private var dismissWindow
+    
+    @State private var isImmersiveSpaceOpen = false
+    @State private var isLiveStreamOpen = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -29,6 +39,25 @@ struct PlayerInfoView: View {
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
+                    Button(isImmersiveSpaceOpen ? "3D deaktivieren" : "3D aktivieren") {
+                        Task {
+                            if isImmersiveSpaceOpen {
+                                await dismissImmersiveSpace()
+                            } else {
+                                await openImmersiveSpace(id: "ChessBoard3D")
+                            }
+                            isImmersiveSpaceOpen.toggle()
+                        }
+                    }
+                    Button(isLiveStreamOpen ? "Livestream deaktivieren" : "Livestream aktivieren") {
+                        if (isLiveStreamOpen) {
+                            dismissWindow(id: "livestream-window")
+                        } else {
+                            openWindow(id: "livestream-window")
+                        }
+                        isLiveStreamOpen.toggle()
+                    }
+                    .opacity(supportsMultipleWindows ? 1 : 0)
                 }
 
                 // Player 2: Rechts ausgerichtet
