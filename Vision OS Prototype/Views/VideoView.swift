@@ -13,6 +13,8 @@ struct VideoView: View {
         }
         .onAppear {
             player.play() // Startet die Wiedergabe beim Öffnen der Ansicht
+            player.volume = 0.02
+//            player.isMuted = true
         }
     }
     // Aktionen für die Buttons
@@ -21,6 +23,7 @@ struct VideoView: View {
             player.pause()
         } else {
             player.play()
+            player.volume = 0
         }
         isPlaying.toggle()
     }

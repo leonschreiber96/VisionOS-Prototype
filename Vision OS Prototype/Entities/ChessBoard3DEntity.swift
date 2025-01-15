@@ -57,7 +57,7 @@ class ChessBoardEntity : Entity {
     
     func chessPieceToEntity(piece: ChessPiece) -> String {
         return "Cylinder_043_0"
-        if (piece.color == ChessColor.black) {
+        if (piece.color == "b") {
             
         }
     }
@@ -101,16 +101,6 @@ class ChessBoardEntity : Entity {
 
 import Foundation
 
-enum ChessColor: String {
-    case white = "w"
-    case black = "b"
-}
-
-struct ChessPiece {
-    let type: Character // 'P', 'N', 'B', 'R', 'Q', 'K' for pieces
-    let color: ChessColor
-}
-
 struct ChessMove {
     let from: String // e.g., "e2"
     let to: String   // e.g., "e4"
@@ -118,7 +108,7 @@ struct ChessMove {
 
 class BoardState {
     private var board: [String: ChessPiece] = [:]
-    private var currentTurn: ChessColor = .white
+    private var currentTurn: String = "w"
     
     init(fen: String) {
         parseFEN(fen: fen)
@@ -128,9 +118,9 @@ class BoardState {
         return board[position]
     }
     
-    func makeMove(_ move: ChessMove, color: ChessColor) -> Bool {
+    func makeMove(_ move: ChessMove, color: String) -> Bool {
         guard currentTurn == color else {
-            print("It's not \(color.rawValue)'s turn!")
+            print("It's not \(color)'s turn!")
             return false
         }
         
@@ -140,14 +130,14 @@ class BoardState {
         }
         
         guard piece.color == color else {
-            print("The piece at \(move.from) does not belong to \(color.rawValue)")
+            print("The piece at \(move.from) does not belong to \(color)")
             return false
         }
         
         // Assume all moves are valid for simplicity (you can add validation)
         board[move.to] = piece
         board[move.from] = nil
-        currentTurn = color == .white ? .black : .white
+        currentTurn = color == "w" ? "b" : "w"
         return true
     }
     
@@ -159,7 +149,7 @@ class BoardState {
             for file in files {
                 let position = "\(file)\(rank)"
                 if let piece = board[position] {
-                    line += piece.color == .white ? piece.type.uppercased() : piece.type.lowercased()
+                    line += piece.color == "w" ? piece.type.uppercased() : piece.type.lowercased()
                 } else {
                     line += "."
                 }
@@ -179,7 +169,7 @@ class BoardState {
         let activeColor = parts[1]
         
         board = [:]
-        currentTurn = activeColor == "w" ? .white : .black
+        currentTurn = activeColor == "w" ? "w" : "b"
         
         let ranks = piecePlacement.split(separator: "/")
         guard ranks.count == 8 else {
@@ -197,9 +187,9 @@ class BoardState {
                     // Use String.Index to subscript a string
                     let file = "abcdefgh".index("abcdefgh".startIndex, offsetBy: fileIndex)
                     let position = "\(String("abcdefgh"[file]))\(rankNumber)"
-                    let color: ChessColor = char.isUppercase ? .white : .black
+                    let color: String = char.isUppercase ? "w" : "b"
                     let pieceType = char.uppercased()
-                    board[position] = ChessPiece(type: Character(pieceType), color: color)
+                    board[position] = ChessPiece(type: pieceType, color: color)
                     fileIndex += 1
                 }
             }

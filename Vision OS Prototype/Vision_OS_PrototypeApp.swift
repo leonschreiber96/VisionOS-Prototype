@@ -15,14 +15,25 @@ struct Vision_OS_PrototypeApp: App {
     @State private var orbitImmersionStyle: ImmersionStyle = .mixed
 
     var body: some Scene {
+//        WindowGroup {
+//            InitialView()
+//                .environment(appModel)
+//        }
+        
         WindowGroup {
-            InitialView()
+            ChessGameView()
                 .environment(appModel)
         }
+        
+        WindowGroup(id: "livestream-window") {
+            VideoView()
+                .environment(appModel)
+        }
+        
         ImmersiveSpace(id: "ChessBoard3D"){
             Orbit()
                 .environment(appModel)
         }
         .immersionStyle(selection: $orbitImmersionStyle, in: .mixed)
-     }
+    }
 }
