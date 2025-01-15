@@ -30,7 +30,7 @@ class ChessBoard: ObservableObject {
             ChessPiece(type: "♜", color: "white"),
             ChessPiece(type: "♞", color: "white"),
             ChessPiece(type: "♝", color: "white"),
-            ChessPiece(type: "♚", color: "white"), 
+            ChessPiece(type: "♚", color: "white"),
             ChessPiece(type: "♛", color: "white"),
             ChessPiece(type: "♝", color: "white"),
             ChessPiece(type: "♞", color: "white"),
