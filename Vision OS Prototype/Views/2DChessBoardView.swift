@@ -18,7 +18,7 @@
 import SwiftUI
 
 struct ChessBoardView: View {
-    @ObservedObject var chessBoard: ChessBoard
+    @ObservedObject var chessBoard: ChessBoardOld
 
     var body: some View {
         VStack(spacing: 0) {

@@ -14,7 +14,7 @@ struct ChessPiece {
 }
 
 // Repräsentiert das Schachbrett und die Figuren
-class ChessBoard: ObservableObject {
+class ChessBoardOld: ObservableObject {
     @Published var board: [[ChessPiece?]] // 8x8 Array, das Figuren enthält
 
     init() {

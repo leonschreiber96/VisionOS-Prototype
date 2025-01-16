@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ChessGameView: View {
-    @StateObject var chessBoard = ChessBoard()
+    @StateObject var chessBoard = ChessBoardOld()
 
     @State private var leftPlayerMoves = ["e4", "Nf3", "Bb5"]
     @State private var rightPlayerMoves = ["e5", "Nc6", "a6"]
