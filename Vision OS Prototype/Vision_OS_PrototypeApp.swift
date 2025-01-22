@@ -30,7 +30,7 @@ struct Vision_OS_PrototypeApp: App {
                 .environment(appModel)
         }
         
-        ImmersiveSpace(id: "ChessBoard3D"){
+        ImmersiveSpace(id: "ChessBoard3DView"){
             Orbit()
                 .environment(appModel)
         }

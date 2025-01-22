@@ -23,7 +23,7 @@ public let realityKitContentBundle = Bundle.module
 /// - Returns: The entity from the bundle, or `nil` if the system cancels
 ///   the load operation before it completes. The method aborts the app
 ///   for any other kind of load failure.
-public func entity(named name: String) async -> Entity? {
+public func entity(named name: String) async throws -> Entity? {
     do {
         return try await Entity(named: name, in: realityKitContentBundle)
 

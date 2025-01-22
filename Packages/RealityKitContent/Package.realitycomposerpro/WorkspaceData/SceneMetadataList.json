@@ -39,117 +39,49 @@
     "objectMetadataList" : [
       [
         "93347035-2031-4D6D-927B-2E0BF648F258",
-        "ChessBoard",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
-        "Root",
-        "ChessBoard",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
-        "ChessBoard",
-        "Meshes",
-        "Sketchfab_model",
-        "root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
-        "ChessBoard",
-        "Materials"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
-        "ChessBoard"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
-        "ChessBoard",
-        "Meshes"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
-        "Root",
-        "ChessBoard",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
-        "Root",
-        "ChessBoard"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
-        "ChessBoard",
-        "Meshes",
-        "Sketchfab_model",
-        "root",
-        "GLTF_SceneRootNode",
-        "Cylinder_043_0"
-      ],
-      {
-        "disallowsFraming" : false,
-        "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
-        "Root",
-        "ChessBoard",
-        "Meshes",
-        "Sketchfab_model",
-        "root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "93347035-2031-4D6D-927B-2E0BF648F258",
         "Root",
         "ChessBoard",
         "Meshes",
         "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
       ],
       {
         "isExpanded" : true,
@@ -172,8 +104,7 @@
       [
         "93347035-2031-4D6D-927B-2E0BF648F258",
         "ChessBoard",
-        "Meshes",
-        "Sketchfab_model"
+        "Meshes"
       ],
       {
         "isExpanded" : true,
@@ -181,7 +112,76 @@
       },
       [
         "93347035-2031-4D6D-927B-2E0BF648F258",
-        "Root"
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root",
+        "ChessBoard"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "Root",
+        "ChessBoard",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cylinder_043_0"
+      ],
+      {
+        "disallowsFraming" : false,
+        "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "93347035-2031-4D6D-927B-2E0BF648F258",
+        "ChessBoard",
+        "Materials"
       ],
       {
         "isExpanded" : true,
@@ -193,8 +193,7 @@
     "objectMetadataList" : [
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
-        "Root",
-        "Sphere_Left"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -202,7 +201,8 @@
       },
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
-        "Root"
+        "Root",
+        "Sphere_Left"
       ],
       {
         "isExpanded" : true,
@@ -223,7 +223,8 @@
     "objectMetadataList" : [
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root"
+        "Root",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -231,8 +232,7 @@
       },
       [
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
-        "Root",
-        "GridMaterial"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -260,6 +260,126 @@
         "Root",
         "GridMaterial",
         "GridMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "DE1CDE14-2764-4635-BD3F-597A4290B6C9" : {
+    "objectMetadataList" : [
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root",
+        "ChessBoard"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cylinder_008_23",
+        "Object_50"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root",
+        "ChessBoard",
+        "Materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cube_001_32"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root",
+        "ChessBoard",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DE1CDE14-2764-4635-BD3F-597A4290B6C9",
+        "Root",
+        "ChessBoard",
+        "Meshes",
+        "Sketchfab_model",
+        "root",
+        "GLTF_SceneRootNode",
+        "Cylinder_008_23"
       ],
       {
         "isExpanded" : true,

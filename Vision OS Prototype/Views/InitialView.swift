@@ -21,7 +21,7 @@ struct InitialView: View {
                     if isImmersiveSpaceOpen {
                         await dismissImmersiveSpace()
                     } else {
-                        await openImmersiveSpace(id: "ChessBoard3D")
+                        await openImmersiveSpace(id: "ChessBoard3DView")
                     }
                     isImmersiveSpaceOpen.toggle()
                 }
