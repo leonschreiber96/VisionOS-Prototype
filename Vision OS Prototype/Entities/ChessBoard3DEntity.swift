@@ -9,28 +9,9 @@ import RealityKit
 import SwiftUI
 import RealityKitContent
 
-enum ChessError: Error {
-    case invalidPiece
-    case invalidBoardIndex
-}
-
-enum PieceType: Int {
-    case pawn = 0b001
-    case rook = 0b010
-    case knight = 0b011
-    case bishop = 0b100
-    case king = 0b101
-    case queen = 0b110
-}
-
-enum PieceColor: Int {
-    case white = 0b1000
-    case black = 0b0000
-}
-
 class ChessBoardEntity : Entity {
     // MARK: - Internal State
-    let game: ChessGame = ChessGame(gameTime: 300)
+    let game: ChessGame = ChessGame()
     
     public var boardBounds: (width: Float, height: Float, depth: Float) = (width: 0.0, height: 0.0, depth: 0.0)
     public var board: ChessBoard3D?

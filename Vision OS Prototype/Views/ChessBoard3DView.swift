@@ -29,31 +29,31 @@ struct ChessBoard3DView: View {
                 
                 chessBoard3DEntity.board!.initializePieces()
                 
-                DispatchQueue.main.async {
-                    let moves = [
-                        "d2-d4", "d7-d5",
-                        "c2-c4", "b8-c6",
-                        "e2-e3", "c8-f5",
-                        "c4-d5", "c6-b4",
-                        "f1-d3", "b4-d3",
-                        "e1-e2", "d3-b4",
-                        "b1-c3", "b4-c2",
-                        "e2-d2", "c2-a1",
-                        "g1-f3", "f5-c2",
-                        "d2-e1", "c2-d1"
-                    ]
-                    
-                    var counter = 0
-                    
-                    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { timer in
-                        let move = moves[counter]
-                        let origin = String(move.split(separator: "-").first!)
-                        let destination = String(move.split(separator: "-").last!)
-                        
-                        chessBoard3DEntity.board!.applyMove(from: ChessBoardField(rawValue: origin.uppercased())!, to: ChessBoardField(rawValue: destination.uppercased())!)
-                        counter += 1
-                    }
-                }
+//                DispatchQueue.main.async {
+//                    let moves = [
+//                        "d2-d4", "d7-d5",
+//                        "c2-c4", "b8-c6",
+//                        "e2-e3", "c8-f5",
+//                        "c4-d5", "c6-b4",
+//                        "f1-d3", "b4-d3",
+//                        "e1-e2", "d3-b4",
+//                        "b1-c3", "b4-c2",
+//                        "e2-d2", "c2-a1",
+//                        "g1-f3", "f5-c2",
+//                        "d2-e1", "c2-d1"
+//                    ]
+//                    
+//                    var counter = 0
+//                    
+//                    Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { timer in
+//                        let move = moves[counter]
+//                        let origin = String(move.split(separator: "-").first!)
+//                        let destination = String(move.split(separator: "-").last!)
+//                        
+//                        chessBoard3DEntity.board!.applyMove(from: ChessBoardField(rawValue: origin.uppercased())!, to: ChessBoardField(rawValue: destination.uppercased())!)
+//                        counter += 1
+//                    }
+//                }
             }
         } update: { content in
             chessBoard3DEntity?.update(

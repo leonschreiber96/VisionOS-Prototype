@@ -15,15 +15,13 @@ struct Vision_OS_PrototypeApp: App {
     @State private var orbitImmersionStyle: ImmersionStyle = .mixed
 
     var body: some Scene {
-//        WindowGroup {
-//            InitialView()
-//                .environment(appModel)
-//        }
-        
         WindowGroup {
-            ChessGameView()
+            MainWindow(appModel: appModel)
                 .environment(appModel)
+                .frame(minWidth: 1360, minHeight: 765)
         }
+        .defaultSize(width: 1.5, height: 1, depth: 0.1, in: .meters)
+        .windowResizability(.contentSize)
         
         WindowGroup(id: "livestream-window") {
             VideoView()
