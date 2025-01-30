@@ -4,7 +4,7 @@
 //
 //  Created by Albnor Sahiti on 23.11.24.
 //
-// Der Code ist eine einfache Datenstruktur, die verwendet wird, um die Farben, die für das Schachbrett verwendet werden, gespeichert sind.
+// Der Code ist eine einfache Datenstruktur, die verwendet wird, um die Farben, die für das Schachbrett verwendet werden, zu speichern.
 //
 
 import SwiftUI

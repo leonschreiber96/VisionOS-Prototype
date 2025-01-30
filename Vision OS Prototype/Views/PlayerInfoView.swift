@@ -154,7 +154,6 @@ struct PlayerDetails: View {
     }
 }
 
-
 #Preview {
     ChessGameView()
 }

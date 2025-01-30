@@ -1,6 +1,6 @@
 //
 //  ChessPiece.swift
-//  ChessXR
+//  Vision OS Prototype
 //
 //  Created by Albnor Sahiti on 16.11.24.
 //
@@ -25,33 +25,69 @@ class ChessBoard: ObservableObject {
 
     // Setzt die Standardpositionen der Schachfiguren
     func setupInitialPosition() {
-        // Schwarze Figuren (untere Reihen)
+        // Weiße Figuren (untere Reihe)
         board[0] = [
+            ChessPiece(type: "♜", color: "black"),
+            ChessPiece(type: "♞", color: "black"),
+            ChessPiece(type: "♝", color: "black"),
+            ChessPiece(type: "♛", color: "black"),
+            ChessPiece(type: "♚", color: "black"),
+            nil, //leer
+            nil, //leer
+            ChessPiece(type: "♜", color: "black")
+        ]
+
+        // Weiße Bauern (siebte Reihe)
+        board[1] = [
+            ChessPiece(type: "♙", color: "black"),
+            ChessPiece(type: "♙", color: "black"),
+            ChessPiece(type: "♙", color: "black"),
+            ChessPiece(type: "♙", color: "black"),
+            nil, // leer
+            ChessPiece(type: "♙", color: "black"),
+            ChessPiece(type: "♙", color: "black"),
+            ChessPiece(type: "♙", color: "black")
+        ]
+
+        // Leere Felder und spezifische Positionen der weißen Figuren
+        board[2] = Array(repeating: nil, count: 8)
+        board[2][5] = ChessPiece(type: "♞", color: "black") // Weißer Springer
+
+        board[3] = Array(repeating: nil, count: 8)
+        board[3][4] = ChessPiece(type: "♙", color: "black") // Weißer Bauer
+        board[3][2] = ChessPiece(type: "♝", color: "black") // Weißer Läufer
+
+        board[4] = Array(repeating: nil, count: 8)
+        board[4][4] = ChessPiece(type: "♙", color: "white") // Schwarzer Bauer
+
+        board[5] = Array(repeating: nil, count: 8)
+        board[5][2] = ChessPiece(type: "♞", color: "white") // Schwarzer Springer
+
+        // Schwarze Bauern (zweite Reihe,)
+        board[6] = [
+            ChessPiece(type: "♙", color: "white"),
+            ChessPiece(type: "♙", color: "white"),
+            ChessPiece(type: "♙", color: "white"),
+            ChessPiece(type: "♙", color: "white"),
+            nil, //leer
+            ChessPiece(type: "♙", color: "white"),
+            ChessPiece(type: "♙", color: "white"),
+            ChessPiece(type: "♙", color: "white")
+        ]
+
+        // Schwarze Figuren (obere Reihe)
+        board[7] = [
             ChessPiece(type: "♜", color: "white"),
-            ChessPiece(type: "♞", color: "white"),
+            nil, //leer
             ChessPiece(type: "♝", color: "white"),
-            ChessPiece(type: "♚", color: "white"),
             ChessPiece(type: "♛", color: "white"),
+            ChessPiece(type: "♚", color: "white"),
             ChessPiece(type: "♝", color: "white"),
             ChessPiece(type: "♞", color: "white"),
             ChessPiece(type: "♜", color: "white")
         ]
-        board[1] = Array(repeating: ChessPiece(type: "♙", color: "white"), count: 8)
-
-        // Weiße Figuren (obere Reihen)
-        board[7] = [
-            ChessPiece(type: "♜", color: "black"),
-            ChessPiece(type: "♞", color: "black"),
-            ChessPiece(type: "♝", color: "black"),
-            ChessPiece(type: "♛", color: "black"), // Schwarze Dame (auf dunklem Feld)
-            ChessPiece(type: "♚", color: "black"), // Schwarzer König (auf hellem Feld)
-            ChessPiece(type: "♝", color: "black"),
-            ChessPiece(type: "♞", color: "black"),
-            ChessPiece(type: "♜", color: "black")
-        ]
-        board[6] = Array(repeating: ChessPiece(type: "♙", color: "black"), count: 8)
     }
-    
+
     // Aktualisiert das Schachbrett basierend auf einem Zug in algebraischer Notation
     func updateBoard(move: String) {
         // Beispiel: "e2e4"
@@ -75,3 +111,4 @@ class ChessBoard: ObservableObject {
         objectWillChange.send()
     }
 }
+

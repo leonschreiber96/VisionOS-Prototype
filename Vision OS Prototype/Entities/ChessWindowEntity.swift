@@ -1,6 +1,6 @@
 //
 //  ChessWindowEntity.swift
-//  ChessXR
+//  Vision OS Prototype
 //
 //  Created by Albnor Sahiti on 16.11.24.
 //
@@ -44,7 +44,7 @@ class ChessWindowEntity: Entity, HasAnchoring {
 
         // Lade die Textur mit Optionen
         let textureOptions = TextureResource.CreateOptions(semantic: .none)
-        guard let texture = try? TextureResource.generate(from: cgImage, options: textureOptions) else {
+        guard let texture = try? TextureResource(image: cgImage, options: textureOptions) else {
             print("Fehler: Konnte CGImage nicht in TextureResource konvertieren.")
             return
         }
