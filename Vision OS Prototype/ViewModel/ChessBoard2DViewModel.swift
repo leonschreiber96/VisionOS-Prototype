@@ -18,6 +18,22 @@ class ChessBoard2DViewModel: ObservableObject {
         self.pieces = boardState.getAllPieces()
     }
     
+    public static func createInstance(from chessEvent: ChessEvent) -> ChessBoard2DViewModel {
+        let chessBoard2DViewModel = ChessBoard2DViewModel(boardState: chessEvent.game.board)
+        if (chessEvent.game.moveHistory.last != nil) {
+            chessBoard2DViewModel.highlightFields = [
+                chessEvent.game.moveHistory.last!.origin,
+                chessEvent.game.moveHistory.last!.target
+            ]
+        }
+        
+        GameStateChangedNotificationCenter.shared.registerMoveHandler(eventGuid: chessEvent.guid, observer: {_ in
+            chessBoard2DViewModel.update()
+        })
+        
+        return chessBoard2DViewModel
+    }
+    
     public func update(highlightFields: [ChessBoardField] = []) {
         self.pieces = self.boardObject.getAllPieces()
         self.highlightFields = highlightFields

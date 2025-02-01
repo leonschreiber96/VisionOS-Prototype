@@ -20,16 +20,15 @@ class ChessGame {
         self.board = ChessBoard()
     }
     
-    public func addMove(from origin: ChessBoardField, to target: ChessBoardField) -> ChessMove? {
+    public func addMove(from origin: ChessBoardField, to target: ChessBoardField) {
         guard let piece = self.board.getPiece(at: origin) else {
             print("Move could not be added, because no piece is on \(origin)")
-            return nil
+            return
         }
         
         let move = ChessMove(from: origin, to: target, which: piece)
         self.moveHistory.append(move)
         self.board.movePiece(from: origin, to: target)
-        return move
     }
     
     public func declareWinner(color: PieceColor) {

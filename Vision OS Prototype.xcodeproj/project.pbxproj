@@ -51,9 +51,9 @@
 		4B41F4FD2CE3AB5800025E4A = {
 			isa = PBXGroup;
 			children = (
-				4B41F5082CE3AB5800025E4A /* Vision OS Prototype */,
 				4B41F5092CE3AB5800025E4A /* Packages */,
 				4B41F5072CE3AB5800025E4A /* Products */,
+				4B41F5082CE3AB5800025E4A /* Vision OS Prototype */,
 			);
 			sourceTree = "<group>";
 		};

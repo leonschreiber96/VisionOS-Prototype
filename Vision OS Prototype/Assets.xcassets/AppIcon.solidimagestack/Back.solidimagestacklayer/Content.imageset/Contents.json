@@ -1,12 +1,15 @@
 {
   "images" : [
     {
-      "idiom" : "vision",
-      "scale" : "2x"
+      "filename" : "chess-board-svgrepo-com.jpg",
+      "idiom" : "vision"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }

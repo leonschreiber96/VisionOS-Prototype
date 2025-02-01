@@ -10,7 +10,7 @@ import SwiftUI
 struct ChessGameView: View {
 //    @StateObject var chessBoard = ChessEventViewModel(ChessEvent())
     
-    @StateObject public var viewModel: ChessEventViewModel
+    @ObservedObject public var viewModel: ChessEventViewModel
 
     @State var leftPlayerSeconds = 330
     @State var rightPlayerSeconds = 285
@@ -38,7 +38,7 @@ struct ChessGameView: View {
 
 //                ChessBoardView(chessBoard: chessBoard)
 //                    .border(Color.green) // Debug-Rahmen
-                ChessGame2DView(viewModel: viewModel.chessBoard2DViewModel)
+                ChessGame2DView(viewModel: ChessBoard2DViewModel.createInstance(from: viewModel.eventObject))
                     .frame(width: 1360 * 0.33, height: 1360 * 0.33)
 
                 PlayerMovesView(
@@ -50,9 +50,12 @@ struct ChessGameView: View {
                 .border(Color.blue) // Debug-Rahmen
                 
                 Button(action: {
-                    guard let move = viewModel.eventObject.game.addMove(from: .A1, to: .A8) else {
+                    viewModel.eventObject.game.addMove(from: .A1, to: .A8)
+                    
+                    guard let move = viewModel.eventObject.game.moveHistory.last else {
                         return
                     }
+                    
                     GameStateChangedNotificationCenter.shared.notifyMove(move: move, eventGuid: viewModel.eventObject.guid)
                 }) {
                     Text("Tap me!")

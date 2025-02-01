@@ -16,10 +16,13 @@ enum NavigationDestinations: String, CaseIterable, Hashable {
 struct MainWindow: View {
     var appModel: AppModel
     
+    @Environment(\.openWindow) private var openWindow
+    
     @State var activeView: AppView = .EventSelection
     
     var body: some View {
-        NavigationStack {
+        VStack{
+            NavigationStack {
                 ScrollView(.horizontal, showsIndicators: true) {
                     HStack() {
                         ForEach(appModel.chessEvents, id: \.guid) { event in
@@ -36,14 +39,21 @@ struct MainWindow: View {
                         }
                     }
                     .frame(maxWidth: .infinity)
+                }
+                .navigationTitle("Available Chess Events")
+                .navigationDestination(for: UUID.self) { screen in
+                    let event = appModel.chessEvents.first(where: { $0.guid == screen })
+                    if (event == nil) { Text("No matching event found! 🥺") }
+                    else {
+                        let vm = ChessEventViewModel(event: event!)
+                        ChessGameView(viewModel: vm)
+                    }
+                }
             }
-            .navigationTitle("Available Chess Events")
-            .navigationDestination(for: UUID.self) { screen in
-                let event = appModel.chessEvents.first(where: { $0.guid == screen })
-                if (event == nil) { Text("No matching event found! 🥺") }
-                else {
-                    let vm = ChessEventViewModel(event: event!)
-                    ChessGameView(viewModel: vm)
+            
+            Button("Video") {
+                Task {
+                    openWindow(id: "multiview")
                 }
             }
         }

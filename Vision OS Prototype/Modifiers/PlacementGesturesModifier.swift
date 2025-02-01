@@ -35,12 +35,16 @@ private struct PlacementGesturesModifier: ViewModifier {
     @State private var startScale: Double? = nil
     @State private var position: Point3D = .zero
     @State private var startPosition: Point3D? = nil
+    @State private var rotation: Angle = .zero
+    @State private var accumulatedRotation: Angle = .zero
+    @State private var startRotation: Angle? = nil
 
     func body(content: Content) -> some View {
         content
             .onAppear {
                 position = initialPosition
             }
+            .rotation3DEffect(rotation + accumulatedRotation, axis: .y)
             .scaleEffect(scale)
             .position(x: position.x, y: position.y)
             .offset(z: position.z)
@@ -74,6 +78,25 @@ private struct PlacementGesturesModifier: ViewModifier {
                     startScale = scale
                 }
             )
+        
+            // Enable people to rotate the model.
+            .simultaneousGesture(
+                RotationGesture()
+                    .onChanged { value in
+                        if let startRotation = startRotation {
+                            // Keep updating the rotation as it progresses
+                            rotation = startRotation + value
+                        } else {
+                            // Set startRotation only once when the gesture begins
+                            startRotation = rotation
+                        }
+                    }
+                    .onEnded { _ in
+                        // Update startRotation after the gesture ends, maintaining continuous rotation
+                        startRotation = rotation
+                    }
+            )
+        
             .onChange(of: axZoomIn) {
                 scale = max(0.1, min(3, scale + 0.2))
                 startScale = scale

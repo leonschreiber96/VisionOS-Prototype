@@ -10,10 +10,9 @@ import SwiftUI
 import UIKit // Import UIKit to access NSString and related methods
 
 
-struct GameSelectionItem: View, Identifiable {
-    let event: ChessEvent
-    var id: UUID = UUID()
-
+struct GameSelectionItem: View {
+    public let event: ChessEvent
+    
     var body: some View {
         VStack {
             PlayerInfo(nationality: event.players.black.nationality,
@@ -23,10 +22,10 @@ struct GameSelectionItem: View, Identifiable {
                        gameOver: event.game.isGameOver,
                        gameResult: event.game.result,
                        secondsRemaining: event.clocks.black.secondsRemaining)
-            .frame(width: 1360 * 0.33, height: 1360 * 0.1)
+            .frame(width: 1360 * 0.3, height: 1360 * 0.05)
 
-//            ChessGame2DView(boardState: event.game.board)
-//                .frame(width: 1360 * 0.33, height: 1360 * 0.33)
+            ChessGame2DView(viewModel: ChessBoard2DViewModel.createInstance(from: event))
+                .frame(width: 1360 * 0.3, height: 1360 * 0.3)
 
             PlayerInfo(nationality: event.players.white.nationality,
                        playerName: event.players.white.name,
@@ -35,7 +34,7 @@ struct GameSelectionItem: View, Identifiable {
                        gameOver: event.game.isGameOver,
                        gameResult: event.game.result,
                        secondsRemaining: event.clocks.white.secondsRemaining)
-            .frame(width: 1360 * 0.33, height: 1360 * 0.1)
+            .frame(width: 1360 * 0.3, height: 1360 * 0.05)
         }
     }
 }
@@ -84,10 +83,10 @@ private struct PlayerInfo: View {
             
             VStack(alignment: .leading) {
                 Text(playerName)
-                    .font(.system(size: 30))
+                    .font(.system(size: 25))
                     .foregroundColor(.white)
                 Text(String(playerElo))
-                    .font(.system(size: 25))
+                    .font(.system(size: 20))
             }
             .padding(0)
             
@@ -100,7 +99,7 @@ private struct PlayerInfo: View {
                     .scaleEffect(0.5)
             } else if gameOver && gameResult == .draw {
                 Text("Draw")
-                    .font(.system(size: 30))
+                    .font(.system(size: 25))
                     .padding(.trailing, 20)
             } else {
                 var formattedTime: String {
@@ -109,7 +108,7 @@ private struct PlayerInfo: View {
                     return String(format: "%02d:%02d", minutes, seconds)
                 }
                 Text(formattedTime)
-                    .font(.system(size: 30))
+                    .font(.system(size: 25))
                     .monospacedDigit()
                     .padding(.trailing, 20)
             }

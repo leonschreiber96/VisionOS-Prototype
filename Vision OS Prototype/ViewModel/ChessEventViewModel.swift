@@ -16,8 +16,6 @@ class ChessEventViewModel: ObservableObject {
     @Published public var whiteMoves: [String]
     @Published public var blackMoves: [String]
     
-    public let chessBoard2DViewModel: ChessBoard2DViewModel
-    
     public init(event: ChessEvent) {
         self.eventObject = event
         
@@ -28,19 +26,9 @@ class ChessEventViewModel: ObservableObject {
         self.whiteMoves = event.game.moveHistory.filter{ $0.movedPiece.color == .white }.map { return $0.getAlgebraicNotation() }
         self.blackMoves = event.game.moveHistory.filter{ $0.movedPiece.color == .black }.map { return $0.getAlgebraicNotation() }
         
-        self.chessBoard2DViewModel = ChessBoard2DViewModel(boardState: self.eventObject.game.board)
-        if (self.eventObject.game.moveHistory.last != nil) {
-            self.chessBoard2DViewModel.highlightFields = [
-                self.eventObject.game.moveHistory.last!.origin,
-                self.eventObject.game.moveHistory.last!.target
-            ]
-        }
-        
         GameStateChangedNotificationCenter.shared.registerMoveHandler(eventGuid: self.eventObject.guid) { [weak self] move in
             if (move.movedPiece.color == .white) { self?.whiteMoves.append(move.getAlgebraicNotation()) }
             else { self?.blackMoves.append(move.getAlgebraicNotation()) }
-            
-            self?.chessBoard2DViewModel.update(highlightFields: [move.origin, move.target])
         }
     }
 }
