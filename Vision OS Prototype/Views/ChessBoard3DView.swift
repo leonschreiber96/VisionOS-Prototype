@@ -10,7 +10,7 @@ import RealityKit
 
 /// The model content for the orbit module.
 struct ChessBoard3DView: View {
-    @State private var chessBoard3DEntity: ChessBoardEntity?
+//    @State private var chessBoard3DEntity: ChessBoardEntity?
 //    let anchor = AnchorEntity(.head, trackingMode: .once)
     //private let boardDimensions: SIMD3<Float>
     
@@ -55,11 +55,12 @@ struct ChessBoard3DView: View {
 //                    }
 //                }
             }
-        } update: { content in
-            chessBoard3DEntity?.update(
-                scale: SIMD3(repeating: 0.05), position: .zero
-            )
         }
+//        update: { content in
+//            chessBoard3DEntity?.update(
+//                scale: SIMD3(repeating: 0.05), position: .zero
+//            )
+//        }
     }
 }
 

@@ -5,8 +5,10 @@
 //  Created by Leon Schreiber on 23.01.25.
 //
 
+import Foundation
+
 class DummyData {
-    let players: [Player] = [
+    static let players: [Player] = [
         .init(name: "Max", gender: "male", nationality: "Germany", age: 33, aktuelleELOZahl: 2985, besteELOZahl: 3150, titel: "IM", beschreibung: "An experienced competitor."),
         .init(name: "Hannah", gender: "female", nationality: "Germany", age: 30, aktuelleELOZahl: 2840, besteELOZahl: 2960, titel: "WIM", beschreibung: "Talented strategist, with a strong defense."),
         .init(name: "Luca", gender: "male", nationality: "Italy", age: 22, aktuelleELOZahl: 2400, besteELOZahl: 2575, titel: "FM", beschreibung: "A rising star with a sharp tactical mind."),
@@ -25,7 +27,7 @@ class DummyData {
         .init(name: "Matteo", gender: "male", nationality: "Italy", age: 29, aktuelleELOZahl: 2625, besteELOZahl: 2700, titel: "IM", beschreibung: "Enjoys deep opening preparation and surprises."),
     ]
     
-    let moves: [ChessMove] = [
+    static let moves: [ChessMove] = [
         .init(from: .G1, to: .F3, which: (type: .knight, color: .white)),
         .init(from: .D7, to: .D5, which: (type: .pawn, color: .black)),
         .init(from: .G2, to: .G3, which: (type: .pawn, color: .white)),
@@ -70,9 +72,9 @@ class DummyData {
         .init(from: .C2, to: .G2, which: (type: .rook, color: .black)),
         .init(from: .G1, to: .G2, which: (type: .king, color: .white))
     ]
-
     
-    func generateRandomGame() -> ChessGame {
+    
+    static func generateRandomGame() -> ChessGame {
         let game = ChessGame()
         
         for i in 0..<Int.random(in: 10...moves.count) {
@@ -91,7 +93,69 @@ class DummyData {
         return game
     }
     
-    func generateRandomEvent() -> ChessEvent {
+    static func getPrerecordedGameStream() -> ChessEventStream {
+        let game = ChessGame()
+        
+        // Move pieces to match the boardstate at the start of the video
+        game.addMove(from: .E2, to: .E4) // White pawn starts at e4
+        game.addMove(from: .E7, to: .E5) // Black pawn starts at e5
+        game.addMove(from: .G1, to: .F3) // White knight starts at f3
+        
+        
+        // Add moves that will occur in the game
+        game.addMove(from: .B8, to: .C6)
+        game.addMove(from: .F1, to: .C4)
+        game.addMove(from: .F8, to: .C5)
+        game.addMove(from: .D2, to: .D3)
+        game.addMove(from: .G8, to: .F6)
+        game.addMove(from: .B1, to: .C3)
+        game.addMove(from: .A7, to: .A6)
+        game.addMove(from: .A2, to: .A4)
+        game.addMove(from: .D7, to: .D6)
+        game.addMove(from: .E1, to: .G1) // Castling
+        game.addMove(from: .H7, to: .H6)
+        game.addMove(from: .C1, to: .E3)
+        game.addMove(from: .C8, to: .E6)
+        game.addMove(from: .A4, to: .A5)
+        game.addMove(from: .C5, to: .B4)
+        game.addMove(from: .C3, to: .D5)
+        game.addMove(from: .B4, to: .A5)
+        game.addMove(from: .C2, to: .C3)
+        game.addMove(from: .A5, to: .B6)
+        game.addMove(from: .D5, to: .B6)
+        game.addMove(from: .C7, to: .B6)
+        game.addMove(from: .C4, to: .E6)
+        game.addMove(from: .F7, to: .E6)
+        game.addMove(from: .D1, to: .B3)
+        
+        let ding: Player = .init(name: "Ding Liren", gender: "male", nationality: "China", age: 32, aktuelleELOZahl: 2734, besteELOZahl: 2816, titel: "Grandmaster", beschreibung: "")
+        let gukesh: Player = .init(name: "Gukesh Dommaraju", gender: "male", nationality: "India", age: 18, aktuelleELOZahl: 2777, besteELOZahl: 2794, titel: "Grandmaster", beschreibung: "")
+        
+        let event = ChessEvent(game: game, players: (white: ding, black: gukesh), gameTime: 90 * 60) // FIDE has 90 minute time limit (and some more complicated rules that we cannot implement here
+        
+        let stream = ChessEventStream(event: event, liveStreamUris: defaultVideos.map { $0.url })
+        stream.moveEventTimes = [0, 1, 2, 3, 4, 4.5, 6, 7, 8, 10, 31, 58, 90, 109, 161, 167, 168, 171, 221, 233, 233.5, 235, 236, 238]
+        
+        return stream
+    }
+    
+    static func generateRandomStream() -> ChessEventStream {
+        let event = generateRandomEvent()
+        let stream = ChessEventStream(event: event)
+        var moveTimeStamps = generateRandomIncreasingNumbers(count: event.game.moveHistory.count, limit: event.gameTime - 10)
+        stream.moveEventTimes = moveTimeStamps.map { TimeInterval($0) }
+        
+        return stream
+    }
+    
+    private static func generateRandomIncreasingNumbers(count: Int, limit: Int) -> [Int] {
+        guard count > 0, limit >= count else { return [] }
+        
+        let uniqueNumbers = Set((1..<limit).shuffled().prefix(count))
+        return uniqueNumbers.sorted()
+    }
+    
+    static func generateRandomEvent() -> ChessEvent {
         let game = generateRandomGame()
         let whitePlayer = players[Int.random(in: 0..<players.count)]
         let blackPlayer = players[Int.random(in: 0..<players.count)]

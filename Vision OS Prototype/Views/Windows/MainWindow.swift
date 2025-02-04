@@ -25,9 +25,9 @@ struct MainWindow: View {
             NavigationStack {
                 ScrollView(.horizontal, showsIndicators: true) {
                     HStack() {
-                        ForEach(appModel.chessEvents, id: \.guid) { event in
-                            NavigationLink(value: event.guid) {
-                                GameSelectionItem(event: event)
+                        ForEach(appModel.availableStreams, id: \.guid) { stream in
+                            NavigationLink(value: stream.guid) {
+                                StreamSelectionItemView(stream: stream)
                             }
                             .padding(1360*0.02)
                             .buttonStyle(.plain)
@@ -42,7 +42,7 @@ struct MainWindow: View {
                 }
                 .navigationTitle("Available Chess Events")
                 .navigationDestination(for: UUID.self) { screen in
-                    let event = appModel.chessEvents.first(where: { $0.guid == screen })
+                    let event = appModel.availableStreams.map(\.eventObject).first(where: { $0.guid == screen })
                     if (event == nil) { Text("No matching event found! 🥺") }
                     else {
                         let vm = ChessEventViewModel(event: event!)
@@ -68,18 +68,16 @@ struct SettingsScreen: View {
 }
 
 #Preview {
-    let dummyData = DummyData()
-    
     let games = [
-        dummyData.generateRandomGame(),
-        dummyData.generateRandomGame(),
-        dummyData.generateRandomGame()
+        DummyData.generateRandomGame(),
+        DummyData.generateRandomGame(),
+        DummyData.generateRandomGame()
     ]
     
     let players = [
-        (white: dummyData.players.randomElement()!, black: dummyData.players.randomElement()!),
-        (white: dummyData.players.randomElement()!, black: dummyData.players.randomElement()!),
-        (white: dummyData.players.randomElement()!, black: dummyData.players.randomElement()!)
+        (white: DummyData.players.randomElement()!, black: DummyData.players.randomElement()!),
+        (white: DummyData.players.randomElement()!, black: DummyData.players.randomElement()!),
+        (white: DummyData.players.randomElement()!, black: DummyData.players.randomElement()!)
     ]
     
     let events = [
@@ -88,10 +86,12 @@ struct SettingsScreen: View {
         ChessEvent(game: games[2], players: players[2], gameTime: 300),
     ]
     
+    let streams = events.map { event in ChessEventStream(event: event) }
+    
     let items = [
-        GameSelectionItem(event: events[0]),
-        GameSelectionItem(event: events[1]),
-        GameSelectionItem(event: events[2])
+        StreamSelectionItemView(stream: streams[0]),
+        StreamSelectionItemView(stream: streams[1]),
+        StreamSelectionItemView(stream: streams[2])
     ]
     
     var model = AppModel()

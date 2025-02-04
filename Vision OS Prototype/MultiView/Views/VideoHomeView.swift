@@ -10,7 +10,7 @@ import SwiftUI
 
 struct VideoHomeView: View {
     @Environment(CustomSceneDelegate.self) var sceneDelegate
-    @State var multiviewStateModel: MultiviewStateViewModel = .init(videos: defaultVideos)
+    @StateObject var multiviewStateModel: MultiviewStateViewModel = .init(videos: defaultVideos)
 
     var body: some View {
         VStack(spacing: 25) {
@@ -18,16 +18,12 @@ struct VideoHomeView: View {
                 .font(.extraLargeTitle)
                 .padding(.top, 20)
 
-            embeddedExperience
-                .frame(minHeight: 400)
-
             MultiviewVideoSelectionView(
                 multiviewStateModel: multiviewStateModel,
                 fromMultiviewContentSelection: false
             )
             .frame(width: 925)
         }
-        .frame(minHeight: multiviewStateModel.supportsEmbeddedPlaybackExperience ? 1000 : 400)
         .padding(.vertical, 50)
         .task {
             // This task is executed when the View is created:
@@ -42,30 +38,6 @@ struct VideoHomeView: View {
         }
         .onChange(of: sceneDelegate.scene, initial: true) {
             multiviewStateModel.scene = sceneDelegate.scene
-        }
-    }
-
-    @ViewBuilder
-    var embeddedExperience: some View {
-        if multiviewStateModel.supportsEmbeddedPlaybackExperience {
-            if let embeddedVideo = multiviewStateModel.embeddedVideo {
-                // When displaying an embedded video, identify it based on the item
-                // so that `UIViewControllerRepresentable` can provide the new
-                // view controller in `makeUIViewController`.
-                ItemVideoPlayer(videoModel: embeddedVideo)
-                    .id(embeddedVideo.video.id)
-            }
-            else {
-                HStack {
-                    ContentUnavailableView(
-                        "No Video Selected",
-                        systemImage: "film",
-                        description: Text("Select a video below to start watching.")
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                .background(.black)
-            }
         }
     }
 }

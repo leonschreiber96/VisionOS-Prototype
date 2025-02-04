@@ -68,6 +68,10 @@ class ChessBoard {
         board[on.index] = color.rawValue | type.rawValue
     }
     
+    public func removePiece(from: ChessBoardField) {
+        board[from.index] = 0b000
+    }
+    
     private func setupPieces() {
         // Set up White pieces (row 1: a1 to h1)
         board[0] = PieceColor.white.rawValue | PieceType.rook.rawValue

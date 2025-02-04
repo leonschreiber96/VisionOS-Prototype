@@ -7,33 +7,41 @@
 //
 
 import SwiftUI
-import UIKit // Import UIKit to access NSString and related methods
 
-
-struct GameSelectionItem: View {
-    public let event: ChessEvent
+struct StreamSelectionItemView: View {
+    public let stream: ChessEventStream
     
     var body: some View {
         VStack {
-            PlayerInfo(nationality: event.players.black.nationality,
-                       playerName: event.players.black.name,
-                       playerElo: event.players.black.aktuelleELOZahl,
+            PlayerInfo(nationality: stream.eventObject.players.black.nationality,
+                       name: stream.eventObject.players.black.name,
+                       elo: stream.eventObject.players.black.aktuelleELOZahl,
                        playerColor: .black,
-                       gameOver: event.game.isGameOver,
-                       gameResult: event.game.result,
-                       secondsRemaining: event.clocks.black.secondsRemaining)
+                       gameResult: stream.eventObject.game.result,
+                       secondsRemaining: stream.eventObject.clocks.black.secondsRemaining)
             .frame(width: 1360 * 0.3, height: 1360 * 0.05)
 
-            ChessGame2DView(viewModel: ChessBoard2DViewModel.createInstance(from: event))
-                .frame(width: 1360 * 0.3, height: 1360 * 0.3)
+            ZStack {
+                ChessGame2DView(viewModel: ChessBoard2DViewModel.createInstance(from: stream.eventObject))
+                    .border(Color(red: 0.98, green: 0.20, blue: 0.35), width: stream.liveStreamUris?.count ?? 0 > 0 ? 8 : 0)
+                    .cornerRadius(15)
+                
+                if (stream.liveStreamUris?.count ?? 0 > 0) {
+                    Image("livestream")
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.top, 1360 * 0.215)
+                        .padding(.leading, 1360 * 0.175)
+                }
+            }
+            .frame(width: 1360 * 0.3, height: 1360 * 0.3)
 
-            PlayerInfo(nationality: event.players.white.nationality,
-                       playerName: event.players.white.name,
-                       playerElo: event.players.white.aktuelleELOZahl,
+            PlayerInfo(nationality: stream.eventObject.players.white.nationality,
+                       name: stream.eventObject.players.white.name,
+                       elo: stream.eventObject.players.white.aktuelleELOZahl,
                        playerColor: .white,
-                       gameOver: event.game.isGameOver,
-                       gameResult: event.game.result,
-                       secondsRemaining: event.clocks.white.secondsRemaining)
+                       gameResult: stream.eventObject.game.result,
+                       secondsRemaining: stream.eventObject.clocks.white.secondsRemaining)
             .frame(width: 1360 * 0.3, height: 1360 * 0.05)
         }
     }
@@ -49,19 +57,20 @@ struct GameSelectionItem: View {
     
     let white = Player(name: "Franz", gender: "male", nationality: "Germany", age: 28, aktuelleELOZahl: 2963, besteELOZahl: 3623, titel: "GM", beschreibung: "A dude")
     let black = Player(name: "Francesca", gender: "female", nationality: "Italy", age: 26, aktuelleELOZahl: 2700, besteELOZahl: 2550, titel: "WGM", beschreibung: "A rising star in the chess world.")
-    let event = ChessEvent(game: game, players: (white: white, black: black), gameTime: 300)
     
     game.declareWinner(color: .black)
     
-    return GameSelectionItem(event: event)
+    let event: ChessEvent = .init(game: game, players: (white: white, black: black), gameTime: 300)
+    let stream: ChessEventStream = .init(event: event, liveStreamUris: [defaultVideos[0].url])
+    
+    return StreamSelectionItemView(stream: stream)
 }
 
 private struct PlayerInfo: View {
     let nationality: String
-    let playerName: String
-    let playerElo: Int
+    let name: String
+    let elo: Int
     let playerColor: PieceColor
-    let gameOver: Bool
     let gameResult: ChessGameResult?
     let secondsRemaining: Int
     
@@ -82,22 +91,22 @@ private struct PlayerInfo: View {
                 )
             
             VStack(alignment: .leading) {
-                Text(playerName)
+                Text(name)
                     .font(.system(size: 25))
                     .foregroundColor(.white)
-                Text(String(playerElo))
+                Text(String(elo))
                     .font(.system(size: 20))
             }
             .padding(0)
             
             Spacer()
             
-            if gameOver && gameResult == .checkmate(for: playerColor) {
+            if gameResult == .checkmate(for: playerColor) {
                 Image("medal")
                     .resizable()
                     .scaledToFit()
                     .scaleEffect(0.5)
-            } else if gameOver && gameResult == .draw {
+            } else if gameResult == .draw {
                 Text("Draw")
                     .font(.system(size: 25))
                     .padding(.trailing, 20)

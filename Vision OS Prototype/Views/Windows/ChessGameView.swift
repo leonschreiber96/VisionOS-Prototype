@@ -100,7 +100,6 @@ struct ChessGameView: View {
 }
 
 #Preview {
-    let dummyData = DummyData()
-    let vm = ChessEventViewModel(event: dummyData.generateRandomEvent())
+    let vm = ChessEventViewModel(event: DummyData.generateRandomEvent())
     ChessGameView(viewModel: vm)
 }

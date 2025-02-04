@@ -13,7 +13,7 @@ struct MultiviewVideoSelectionView: View {
                 ForEach(multiviewStateModel.videoViewModels, id: \.video) { videoViewModel in
                     Button {
                         Task {
-                            await multiviewStateModel.videoSelected(
+                            await multiviewStateModel.selectVideoForPlayback(
                                 videoViewModel: videoViewModel,
                                 inMultiview: fromMultiviewContentSelection
                             )
