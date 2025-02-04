@@ -62,3 +62,5 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 .DS_STORE
 *.mp4
+*.mov
+Videos/
