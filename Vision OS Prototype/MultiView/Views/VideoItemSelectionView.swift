@@ -41,10 +41,10 @@ struct VideoItemSelectionView: View {
     }
 }
 
-#Preview {
-    let item = defaultVideos.first!
-    VideoItemSelectionView(videoModel: VideoViewModel(video: item), inMultiviewContentSelection: true)
-    .border(.red.opacity(0.25))
-    .padding(50)
-    .glassBackgroundEffect()
-}
+//#Preview {
+//    let item = defaultVideos.first!
+//    VideoItemSelectionView(videoModel: VideoViewModel(video: item), inMultiviewContentSelection: true)
+//    .border(.red.opacity(0.25))
+//    .padding(50)
+//    .glassBackgroundEffect()
+//}

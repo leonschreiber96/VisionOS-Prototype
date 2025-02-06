@@ -12,7 +12,7 @@ import RealityKitContent
 @MainActor
 class ChessBoard3D {
     private var realityKitModelIdentifier: String = "ChessBoard"
-    private var gameObject: ChessGame
+    private var streamObject: ChessEventStream
     
     private var baseModel: Entity?
     private var meshCollection: Entity.ChildCollection?
@@ -24,9 +24,10 @@ class ChessBoard3D {
     
     private var boardBounds: (width: Float, height: Float, depth: Float) = (width: 0.0, height: 0.0, depth: 0.0)
     
-    init(realityKitModelIdentifier: String?, game: ChessGame?) {
+    init(realityKitModelIdentifier: String?, stream: ChessEventStream) {
         if (realityKitModelIdentifier != nil) { self.realityKitModelIdentifier = realityKitModelIdentifier! }
-        self.gameObject = game ?? ChessGame()
+        self.streamObject = stream
+        
     }
     
     public func loadModel() async throws {
@@ -46,12 +47,24 @@ class ChessBoard3D {
             .filter { mesh in mesh.name.starts(with: "Cylinder") }
             .forEach { pieceMesh in pieceMesh.removeFromParent() }
         
-        self.gameObject.board.getAllPieces()
+        let x = ChessBoard()
+        x.getAllPieces()
             .forEach { piece in
                 let mesh = self.inventory!.getModel(color: piece.color, type: piece.type)
                 self.meshCollection!.append(mesh)
                 self.piecesOnBoard.append(ChessPiece3D(piece: piece.type, color: piece.color, location: piece.position, entity: mesh))
             }
+        
+//        self.gameObject.board.getAllPieces()
+//            .forEach { piece in
+//                let mesh = self.inventory!.getModel(color: piece.color, type: piece.type)
+//                self.piecesOnBoard.append(ChessPiece3D(piece: piece.type, color: piece.color, location: piece.position, entity: mesh))
+//            }
+        
+//        self.gameObject.moveHistory.forEach { move in
+//            self.applyMove(from: move.origin, to: move.target, duration: 1.0)
+//        }
+        
         
         let newBounds: BoundingBox = self.boardEntity!.visualBounds(relativeTo: self.boardEntity)
         
@@ -73,12 +86,12 @@ class ChessBoard3D {
         2. Modify the internal state of the chess game
         3. Modify the internal representation of where the pieces are located
      */
-    public func applyMove(from origin: ChessBoardField, to destination: ChessBoardField, duration: TimeInterval = 2.0) {
-        self.animateMovement(from: origin, to: destination, duration: duration)
-        self.gameObject.addMove(from: origin, to: destination)
+    public func applyMove(move: ChessMove, duration: TimeInterval = 2.0) {
+        self.animateMovement(move: move, duration: duration)
+//        self.gameObject.addMove(from: origin, to: destination)
         
-        let piece3D = self.piecesOnBoard.first { piece in piece.location == origin }!
-        piece3D.location = destination
+        let piece3D = self.piecesOnBoard.first { piece in piece.location == move.origin }!
+        piece3D.location = move.target
     }
     
     public func initializePieces() {
@@ -99,52 +112,151 @@ class ChessBoard3D {
             else { print ("Error: Unknown piece")}
             
             if origin == nil { return }
-            
-            let translation = self.calculateTranslationForMove(from: origin!, to: piece.location)
+
+            let translation = self.calculateTranslationForMove(move: ChessMove(from: origin!, to: piece.location, which: (type: piece.piece, color: piece.color)))
             piece.entity.move(to: Transform(translation: translation), relativeTo: piece.entity, duration: 0.0)
         }
+        
+        DispatchQueue.main.async {
+//                            let moves = [
+//                                ChessMove(from: .H2, to: .H6, which: (type: .pawn, color: .white)),
+//                                ChessMove(from: .H6, to: .A6, which: (type: .pawn, color: .white))
+//                            ]
+            
+            let moves = self.streamObject.movesUntilCurrentTimestamp
+        
+                            var counter = 0
+        
+            Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
+                    if (counter >= moves.count) {
+                        return}
+                    let move = moves[counter]
+            
+                    let translation = self.calculateTranslationForMove(move: move)
+                    let piece3D = self.piecesOnBoard.first { piece in piece.location == move.origin }!
+                    piece3D.entity.move(to: Transform(translation: translation), relativeTo: piece3D.entity)
+                
+                let pieceInDestination = self.piecesOnBoard.first { piece in piece.location == move.target }
+                            let uuid = pieceInDestination?.id
+                if pieceInDestination != nil {
+                                        let x = self.piecesOnBoard.first { piece in piece.id == uuid }
+                                        x!.entity.removeFromParent()
+                                        if let index = self.piecesOnBoard.firstIndex(where: { $0 === x }) {
+                                            self.piecesOnBoard.remove(at: index)
+                                        }
+                            }
+                piece3D.location = move.target
+                    if move.isCastlingMove {
+                        let possibleRookOrigins: [ChessBoardField] = move.movedPiece.color == .white ? [.A1, .H1] : [.A8, .H8]
+                        let possibleRookDestinations: [ChessBoardField] = move.movedPiece.color == .white ? [.C1, .F1] : [.C8, .F8]
+                        let correspondingRookOrigin = move.target.file > 4 ? possibleRookOrigins[1] : possibleRookOrigins[0]
+                        let correspondingRookTarget = move.target.file > 4 ? possibleRookDestinations[1] : possibleRookDestinations[0]
+                        let rookMove = ChessMove(from:correspondingRookOrigin, to: correspondingRookTarget, which: (type: .rook, color: move.movedPiece.color))
+                        let rookTranslation = self.calculateTranslationForMove(move: rookMove)
+                        let rookPiece3D = self.piecesOnBoard.first { piece in piece.location == rookMove.origin }!
+                        rookPiece3D.entity.move(to: Transform(translation: rookTranslation), relativeTo: rookPiece3D.entity)
+                        rookPiece3D.location = rookMove.target
+                    }
+                    counter += 1
+                }
+            }
+        
+//        let moves = self.gameObject.moveHistory
+//        moves.forEach { move in
+//            let translation = self.calculateTranslationForMove(move: move)
+//            let piece3D = self.piecesOnBoard.first { piece in piece.location == move.origin }!
+//            piece3D.entity.move(to: Transform(translation: translation), relativeTo: piece3D.entity)
+//            
+//            if move.isCastlingMove {
+//                let possibleRookOrigins: [ChessBoardField] = move.movedPiece.color == .white ? [.A1, .H1] : [.A8, .H8]
+//                let possibleRookDestinations: [ChessBoardField] = move.movedPiece.color == .white ? [.C1, .F1] : [.C8, .F8]
+//                let correspondingRookOrigin = move.target.file > 4 ? possibleRookOrigins[1] : possibleRookOrigins[0]
+//                let correspondingRookTarget = move.target.file > 4 ? possibleRookDestinations[1] : possibleRookDestinations[0]
+//                let rookMove = ChessMove(from:correspondingRookOrigin, to: correspondingRookTarget, which: (type: .rook, color: move.movedPiece.color))
+//                let rookTranslation = self.calculateTranslationForMove(move: rookMove)
+//                let rookPiece3D = self.piecesOnBoard.first { piece in piece.location == rookMove.origin }!
+//                rookPiece3D.entity.move(to: Transform(translation: rookTranslation), relativeTo: rookPiece3D.entity)
+//                rookPiece3D.location = rookMove.target
+//            }
+//            
+//            let pieceInDestination = self.piecesOnBoard.first { piece in piece.location == move.target }
+//            let uuid = pieceInDestination?.id
+//            
+//            if pieceInDestination != nil {
+//                // Perform the removal of the piece at the destination after a delay, ensuring main thread safety
+//    //            Timer.scheduledTimer(withTimeInterval: duration * 0.8, repeats: false) { [weak self] _ in
+//    //                Task { @MainActor in
+//                        // Remove the piece from the scene and board
+//                        let x = self.piecesOnBoard.first { piece in piece.id == uuid }
+//                        x!.entity.removeFromParent()
+//                        if let index = self.piecesOnBoard.firstIndex(where: { $0 === x }) {
+//                            self.piecesOnBoard.remove(at: index)
+//                        }
+//    //                }
+//    //            }
+//            }
+//            piece3D.location = move.target
+//        }
+        
+        print("Initialized")
     }
     
     public func getModelEntity() -> Entity? { self.baseModel }
     public func isModelLoaded() -> Bool { self.baseModel != nil }
     public func areMeshesExtracted() -> Bool { self.meshCollection != nil }
     
-    private func animateMovement(of piece: ChessPiece3D, to destination: ChessBoardField, duration: TimeInterval) {
-        let translation = self.calculateTranslationForMove(from: piece.location, to: destination)
+    private func animateMovement(move: ChessMove, duration: TimeInterval) {
+        guard let piece = self.piecesOnBoard.first(where: { $0.location == move.origin })
+        else { return }
+        
+        let translation = self.calculateTranslationForMove(move: move)
         
         piece.entity.move(to: Transform(translation: translation), relativeTo: piece.entity, duration: duration)
         
-        let pieceInDestination = self.piecesOnBoard.first { piece in piece.location == destination }
+        let pieceInDestination = self.piecesOnBoard.first { piece in piece.location == move.target }
         let uuid = pieceInDestination?.id
         
         if pieceInDestination != nil {
             // Perform the removal of the piece at the destination after a delay, ensuring main thread safety
-            Timer.scheduledTimer(withTimeInterval: duration * 0.8, repeats: false) { [weak self] _ in
-                Task { @MainActor in
+//            Timer.scheduledTimer(withTimeInterval: duration * 0.8, repeats: false) { [weak self] _ in
+//                Task { @MainActor in
                     // Remove the piece from the scene and board
-                    let x = self?.piecesOnBoard.first { piece in piece.id == uuid }
+                    let x = self.piecesOnBoard.first { piece in piece.id == uuid }
                     x!.entity.removeFromParent()
-                    if let index = self?.piecesOnBoard.firstIndex(where: { $0 === x }) {
-                        self?.piecesOnBoard.remove(at: index)
+                    if let index = self.piecesOnBoard.firstIndex(where: { $0 === x }) {
+                        self.piecesOnBoard.remove(at: index)
                     }
-                }
-            }
+//                }
+//            }
         }
     }
     
-    private func animateMovement(from origin: ChessBoardField, to destination: ChessBoardField, duration: TimeInterval) {
-        let piece = self.piecesOnBoard.first { piece in piece.location == origin }
-        if (piece == nil) { return }
-        
-        self.animateMovement(of: piece!, to: destination, duration: duration)
-    }
+//    private func animateMovement(move: ChessMove, duration: TimeInterval) {
+//        let piece = self.piecesOnBoard.first { piece in piece.location == move.origin }
+//        if (piece == nil) { return }
+//        
+//        self.animateMovement(move: move, duration: duration)
+//    }
     
-    private func calculateTranslationForMove(from origin: ChessBoardField, to destination: ChessBoardField) -> SIMD3<Float> {
+    private func calculateTranslationForMove(move: ChessMove) -> SIMD3<Float> {
+        let origin = move.origin
+        let destination = move.target
+        
         let numRows = destination.rank - origin.rank
         let numCols = destination.file - origin.file
 
         let pieceOnBoard = self.piecesOnBoard.first(where: { piece in piece.location == origin })
-        let distanceScalingFactor = pieceOnBoard!.entity.scale(relativeTo: self.boardEntity)
+        var distanceScalingFactor: SIMD3<Float>
+        switch pieceOnBoard?.piece {
+        case .queen, .king, .rook, .pawn:
+            distanceScalingFactor = SIMD3<Float>(0.061787121, 0.954118609, 0.061787121)
+        case .knight:
+            distanceScalingFactor = SIMD3<Float>(0.0511548445, 0.789934754, 0.0511548519)
+        case .bishop:
+            distanceScalingFactor = SIMD3<Float>(0.0476998799, 0.736583054, 0.0476998873)
+        default:
+            distanceScalingFactor = SIMD3<Float>(0.061787121, 0.954118609, 0.061787121)
+        }
         
         let fieldWidth = self.boardBounds.width / 8
         var xDistance = Float(numCols) * fieldWidth * (1.0 / distanceScalingFactor.x)
@@ -153,6 +265,14 @@ class ChessBoard3D {
         if ((pieceOnBoard?.piece == .bishop || pieceOnBoard?.piece == .knight) && pieceOnBoard?.color == .white) {
             xDistance *= -1
             zDistance *= -1
+        }
+        
+        if pieceOnBoard?.piece == .queen && pieceOnBoard?.color == .white {
+            xDistance *= -1
+        }
+        
+        if pieceOnBoard?.piece == .queen && pieceOnBoard?.color == .black {
+            xDistance *= -1
         }
         
         return SIMD3(xDistance, 0, zDistance)

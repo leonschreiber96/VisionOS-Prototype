@@ -9,10 +9,12 @@ import SwiftUI
 
 struct PlayerMovesView: View {
     let playerName: String          // Name des Spielers
-    let moves: [String]             // Liste der gespielten Züge
-    let remainingTime: String       // Verbleibende Zeit als String im Format MM:SS
+    let playerColor: PieceColor
+    
+    @Environment(AppModel.self) private var model
 
     var body: some View {
+        
         VStack(alignment: .leading, spacing: 10) {
             // Spielername
             Text(playerName)
@@ -24,8 +26,8 @@ struct PlayerMovesView: View {
             // Liste der Spielzüge
             ScrollView {
                 VStack(alignment: .leading, spacing: 5) {
-                    ForEach(moves.indices, id: \.self) { index in
-                        Text("\(index + 1). \(moves[index])") // Nummerierter Zug
+                    ForEach((model.currentStream?.movesUntilCurrentTimestamp ?? []).indices, id: \.self) { index in
+                        Text("\(index + 1). \((model.currentStream?.movesUntilCurrentTimestamp ?? [])[index].getAlgebraicNotation())") // Nummerierter Zug
                             .font(.subheadline)
                             .foregroundColor(.white)
                     }
@@ -43,7 +45,9 @@ struct PlayerMovesView: View {
                 .font(.subheadline)
                 .foregroundColor(.white)
 
-            Text(remainingTime)
+            Text(playerColor == .white ?
+                    String((model.currentStream?.eventObject.clocks.white.secondsRemaining ?? 0)) :
+                    String((model.currentStream?.eventObject.clocks.black.secondsRemaining ?? 0)))
                 .font(.headline)
                 .fontWeight(.bold)
                 .foregroundColor(.yellow)

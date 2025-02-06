@@ -8,7 +8,8 @@
 
 import Foundation
 
-class ChessMove {
+class ChessMove: Identifiable {
+    let guid = UUID()
     var origin: ChessBoardField
     var target: ChessBoardField
     var movedPiece: (type: PieceType, color: PieceColor)
@@ -16,8 +17,9 @@ class ChessMove {
     var isPromotionMove: Bool = false
     var isEnPassantMove: Bool = false
     var isCaptureMove: Bool = false
+    var capturedPiece: PieceType?
     
-    init(from origin: ChessBoardField, to target: ChessBoardField, which piece: (type: PieceType, color: PieceColor), isCapture: Bool = false) {
+    init(from origin: ChessBoardField, to target: ChessBoardField, which piece: (type: PieceType, color: PieceColor), isCapture: Bool = false, capturedPiece: PieceType? = nil) {
         self.origin = origin
         self.target = target
         self.movedPiece = piece
@@ -26,6 +28,7 @@ class ChessMove {
         self.isPromotionMove = self.determineIfPromotionMove()
         self.isEnPassantMove = self.determineIfEnPassantMove()
         self.isCaptureMove = isCapture
+        self.capturedPiece = capturedPiece
     }
     
     public func getAlgebraicNotation() -> String {
@@ -54,6 +57,6 @@ class ChessMove {
 
     
     private func determineIfCastlingMove() -> Bool { self.movedPiece.type == PieceType.king && abs(self.origin.index - self.target.index) == 2 }
-    private func determineIfPromotionMove() -> Bool { self.movedPiece.type == PieceType.pawn && self.target.file == (self.movedPiece.color == .white ? 7 : 0)}
+    private func determineIfPromotionMove() -> Bool { self.movedPiece.type == PieceType.pawn && self.target.rank == (self.movedPiece.color == .white ? 7 : 0)}
     private func determineIfEnPassantMove() -> Bool { self.movedPiece.type == PieceType.pawn && abs(self.target.file - self.origin.file) == 2 }
 }

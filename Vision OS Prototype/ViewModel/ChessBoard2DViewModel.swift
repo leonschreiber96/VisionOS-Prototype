@@ -6,36 +6,45 @@
 //
 
 import Foundation
+import SwiftUICore
 
 class ChessBoard2DViewModel: ObservableObject {
-    public let boardObject: ChessBoard
+    @Published private(set) var pieces: [(type: PieceType, color: PieceColor, position: ChessBoardField)] = []
+    @Published private(set) var highlightFields: [ChessBoardField] = []
     
-    @Published public var pieces: [(type: PieceType, color: PieceColor, position: ChessBoardField)]
-    @Published public var highlightFields: [ChessBoardField] = []
+    private var streamObject: ChessEventStream
     
-    init(boardState: ChessBoard) {
-        self.boardObject = boardState
-        self.pieces = boardState.getAllPieces()
-    }
-    
-    public static func createInstance(from chessEvent: ChessEvent) -> ChessBoard2DViewModel {
-        let chessBoard2DViewModel = ChessBoard2DViewModel(boardState: chessEvent.game.board)
-        if (chessEvent.game.moveHistory.last != nil) {
-            chessBoard2DViewModel.highlightFields = [
-                chessEvent.game.moveHistory.last!.origin,
-                chessEvent.game.moveHistory.last!.target
-            ]
+    init(from chessStream: ChessEventStream) {
+        self.streamObject = chessStream
+        let moves = self.streamObject.movesUntilCurrentTimestamp
+        let tempBoard = ChessBoard()
+        for move in moves {
+            tempBoard.movePiece(from: move.origin, to: move.target)
         }
+        self.pieces = tempBoard.getAllPieces()
         
-        GameStateChangedNotificationCenter.shared.registerMoveHandler(eventGuid: chessEvent.guid, observer: {_ in
-            chessBoard2DViewModel.update()
+        GameStateChangedNotificationCenter.shared.registerMoveHandler(eventGuid: chessStream.eventObject.guid, observer: {move in
+            self.update(highlight: [move.origin, move.target])
         })
         
-        return chessBoard2DViewModel
+        guard let lastMove = moves.last
+        else { return }
+        
+        self.highlightFields = [
+            lastMove.origin,
+            lastMove.target
+        ]
     }
     
-    public func update(highlightFields: [ChessBoardField] = []) {
-        self.pieces = self.boardObject.getAllPieces()
-        self.highlightFields = highlightFields
+    public func update(highlight highlightedFields: [ChessBoardField] = []) {
+        let moves = self.streamObject.movesUntilCurrentTimestamp
+        
+        let tempGame = ChessGame()
+        for move in moves {
+            tempGame.addMove(from: move.origin, to: move.target)
+        }
+        
+        self.pieces = tempGame.board.getAllPieces()
+        self.highlightFields = highlightedFields
     }
 }

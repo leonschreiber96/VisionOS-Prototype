@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct Vision_OS_PrototypeApp: App {
 
-    @State private var appModel = AppModel()
+    private var appModel = AppModel()
     
     @State private var orbitImmersionStyle: ImmersionStyle = .mixed
     
@@ -19,27 +19,24 @@ struct Vision_OS_PrototypeApp: App {
     var body: some Scene {
         WindowGroup {
             MainWindow(appModel: appModel)
-                .environment(appModel)
                 .frame(minWidth: 500, minHeight: 500)
         }
         .defaultSize(width: 1, height: 0.6, depth: 0.1, in: .meters)
         .windowResizability(.contentSize)
+        .environment(appModel)
         
         
         WindowGroup(id: "multiview") {
-            VideoHomeView()
+            VideoHomeView(multiviewStateModel: .init(videos: defaultVideos, stream: appModel.currentStream!))
         }
         .windowResizability(.contentSize)
-        
-        WindowGroup(id: "livestream-window") {
-            VideoView()
-                .environment(appModel)
-        }
+        .environment(appModel)
         
         ImmersiveSpace(id: "ChessBoard3DView"){
             Orbit()
                 .environment(appModel)
         }
+        .environment(appModel)
         .immersionStyle(selection: $orbitImmersionStyle, in: .mixed)
     }
 }

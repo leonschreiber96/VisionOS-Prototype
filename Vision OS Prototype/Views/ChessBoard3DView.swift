@@ -13,10 +13,12 @@ struct ChessBoard3DView: View {
 //    @State private var chessBoard3DEntity: ChessBoardEntity?
 //    let anchor = AnchorEntity(.head, trackingMode: .once)
     //private let boardDimensions: SIMD3<Float>
+    @Environment(AppModel.self) private var model
     
     var body: some View {
         RealityView { content in
-            let chessBoard3DEntity = ChessBoardEntity()
+            guard model.currentStream?.eventObject.game != nil else { return }
+            let chessBoard3DEntity = ChessBoardEntity(stream: model.currentStream!)
             content.add(chessBoard3DEntity)
 
             Task {
@@ -62,6 +64,10 @@ struct ChessBoard3DView: View {
 //            )
 //        }
     }
+}
+
+class Chessboard3DViewModel {
+    
 }
 
 #Preview { ChessBoard3DView() }

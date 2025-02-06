@@ -9,19 +9,24 @@ import RealityKit
 import SwiftUI
 import RealityKitContent
 
-class ChessBoardEntity : Entity {
+final class ChessBoardEntity : Entity {
     // MARK: - Internal State
-    let game: ChessGame = ChessGame()
+    let stream: ChessEventStream
     
     public var boardBounds: (width: Float, height: Float, depth: Float) = (width: 0.0, height: 0.0, depth: 0.0)
     public var board: ChessBoard3D?
     
-    @MainActor required init () {
+    @MainActor required init (stream: ChessEventStream) {
+        self.stream = stream
         super.init()
     }
     
+    @MainActor @preconcurrency required init() {
+        fatalError("init() has not been implemented")
+    }
+    
     @MainActor public func setup() async throws {
-        let chessBoard = ChessBoard3D(realityKitModelIdentifier: "ChessBoard", game: self.game)
+        let chessBoard = ChessBoard3D(realityKitModelIdentifier: "ChessBoard", stream: self.stream)
         try await chessBoard.loadModel()
         self.board = chessBoard
         
@@ -48,7 +53,7 @@ class ChessBoardEntity : Entity {
         move(
             to: Transform(
                 scale: scale,
-                rotation: .init(angle: 0.2, axis: [0, 1, 0]),
+                rotation: .init(angle: 0.0, axis: [0, 1, 0]),
                 translation: position
             ),
             relativeTo: parent)

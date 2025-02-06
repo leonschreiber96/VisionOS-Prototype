@@ -30,15 +30,6 @@ struct PlayerInfoView: View {
 
                 // Duell-Symbol in der Mitte
                 VStack {
-                    Image(systemName: "bolt.circle.fill") // Beispiel für ein Duell-Symbol
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .foregroundColor(.yellow) // Farbe des Symbols
-                    Text("VS")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
                     Button(isImmersiveSpaceOpen ? "3D deaktivieren" : "3D aktivieren") {
                         Task {
                             if isImmersiveSpaceOpen {
@@ -51,9 +42,9 @@ struct PlayerInfoView: View {
                     }
                     Button(isLiveStreamOpen ? "Livestream deaktivieren" : "Livestream aktivieren") {
                         if (isLiveStreamOpen) {
-                            dismissWindow(id: "livestream-window")
+                            dismissWindow(id: "multiview")
                         } else {
-                            openWindow(id: "livestream-window")
+                            openWindow(id: "multiview")
                         }
                         isLiveStreamOpen.toggle()
                     }
@@ -115,20 +106,11 @@ struct PlayerDetails: View {
                 }
             }
 
-            // Beschreibung des Spielers
-            Text(player.beschreibung)
-                .font(.footnote)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(alignment == .leading ? .leading : .trailing)
-                .lineLimit(3) // Optional: Maximale Zeilenbeschränkung
-
             // Zusätzliche Details (Alter, Nationalität, etc.)
             VStack(alignment: alignment == .leading ? .leading : .trailing, spacing: 4) {
                 Text("Alter: \(player.age)")
                     .font(.subheadline)
                 Text("Nationalität: \(player.nationality)")
-                    .font(.subheadline)
-                Text("Geschlecht: \(player.gender)")
                     .font(.subheadline)
             }
             .foregroundColor(.white)
@@ -137,10 +119,7 @@ struct PlayerDetails: View {
 
             // ELO-Zahlen
             VStack(alignment: alignment == .leading ? .leading : .trailing, spacing: 4) {
-                Text("Aktuelle ELO-Zahl: \(player.aktuelleELOZahl)")
-                    .font(.subheadline)
-                    .foregroundColor(.primary)
-                Text("Beste ELO-Zahl: \(player.besteELOZahl)")
+                Text("ELO: \(player.aktuelleELOZahl)")
                     .font(.subheadline)
                     .foregroundColor(.primary)
             }

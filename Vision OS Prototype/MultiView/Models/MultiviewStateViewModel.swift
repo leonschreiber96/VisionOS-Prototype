@@ -12,12 +12,15 @@ final class MultiviewStateViewModel: ObservableObject, AVExperienceController.De
     /// as the embedded video when leaving the multiview experience.
     var videosInMultiview: Int { videoViewModels.count { $0.isAddedToMultiview } }
     
+    var streamObject: ChessEventStream
+    
     /// The scene to use as the fallback placement for instances where you don't use the embedded experience.
     var scene: UIScene?
 
-    init(videos: [Video]) {
-        let videoModels = videos.map { VideoViewModel(video: $0) }
+    init(videos: [Video], stream: ChessEventStream) {
+        let videoModels = videos.map { VideoViewModel(video: $0, streamObject: stream) }
         self.videoViewModels = videoModels
+        self.streamObject = stream
 
         self.videoViewModels.forEach { videoModel in
             videoModel.viewController.experienceController.delegate = self
@@ -40,6 +43,8 @@ final class MultiviewStateViewModel: ObservableObject, AVExperienceController.De
                 await videoViewModel.resetPlaybackCursorAndPlayVideo()
             }
         }
+        
+//        await videoViewModel.scrub(to: streamObject.currentTimestamp)
     }
     
     @MainActor

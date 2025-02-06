@@ -10,8 +10,9 @@ import SwiftUI
 
 struct VideoHomeView: View {
     @Environment(CustomSceneDelegate.self) var sceneDelegate
-    @StateObject var multiviewStateModel: MultiviewStateViewModel = .init(videos: defaultVideos)
-
+    @Environment(AppModel.self) private var model
+    @ObservedObject var multiviewStateModel: MultiviewStateViewModel
+    
     var body: some View {
         VStack(spacing: 25) {
             Text("Select Your Preferred Live Stream")

@@ -14,6 +14,8 @@ class VideoViewModel {
     let viewController: AVPlayerViewController
     var isAddedToMultiview: Bool = false
     
+    var streamObject: ChessEventStream
+    
     let identifier: UUID = UUID()
 
     private let player: AVPlayer
@@ -26,7 +28,7 @@ class VideoViewModel {
 //    }
     
     @MainActor
-    init(video: Video) {
+    init(video: Video, streamObject: ChessEventStream ) {
         let playerController = AVPlayerViewController()
         
         // Enable the multiview experience, along with the default recommended set.
@@ -36,8 +38,7 @@ class VideoViewModel {
         self.viewController = playerController
         self.player = .init(playerItem: video.playerItem)
         self.viewController.player = player
-        
-//        self.printi(text: "Init")
+        self.streamObject = streamObject
         
         self.playPauseHandler = self.player.publisher(for: \.timeControlStatus).sink { [weak self] status in
             guard self != nil else { return }

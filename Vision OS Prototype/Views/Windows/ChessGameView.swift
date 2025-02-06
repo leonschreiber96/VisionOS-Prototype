@@ -7,87 +7,95 @@
 
 import SwiftUI
 
+struct MovesView: View {
+    @ObservedObject var viewModel: ChessEventStreamViewModel
+    let color: PieceColor
+    
+    var body: some View {
+        ScrollView {
+            List(viewModel.whiteMovesUntilCurrentTimestamp) {move in
+                Text(move.getAlgebraicNotation())
+            }
+        }
+        .frame(maxHeight: 900) // Maximale Höhe der Zugliste
+        .padding()
+        .background(Color.black.opacity(0.5)) // Hintergrund für die Zugliste
+        .cornerRadius(10)
+    }
+}
+
 struct ChessGameView: View {
 //    @StateObject var chessBoard = ChessEventViewModel(ChessEvent())
     
-    @ObservedObject public var viewModel: ChessEventViewModel
+    @ObservedObject public var viewModel: ChessEventStreamViewModel
 
     @State var leftPlayerSeconds = 330
     @State var rightPlayerSeconds = 285
     @State var isPlayer1Turn = true
+    
+    @Environment(AppModel.self) private var model
 
     var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
-        VStack(spacing: 10) { // Minimaler vertikaler Abstand zwischen den Elementen
-            // Anzeige des aktuellen Spielers
-            CurrentPlayerView(
-                playerName: isPlayer1Turn ? "Anton Mustermann" : "Magnus Carlsen",
-                remainingTime: isPlayer1Turn ? timeString(from: leftPlayerSeconds) : timeString(from: rightPlayerSeconds)
-            )
-
-            // HStack: Zuglisten + Schachbrett
-            HStack(spacing: 50) { // Abstand zwischen Zuglisten und Schachbrett
-                PlayerMovesView(
-                    playerName: "Anton Mustermann",
-                    moves: viewModel.whiteMoves,
-                    remainingTime: timeString(from: leftPlayerSeconds)
-                )
-                .frame(width: 120)
-                .border(Color.red) // Debug-Rahmen
-
-//                ChessBoardView(chessBoard: chessBoard)
-//                    .border(Color.green) // Debug-Rahmen
-                ChessGame2DView(viewModel: ChessBoard2DViewModel.createInstance(from: viewModel.eventObject))
-                    .frame(width: 1360 * 0.33, height: 1360 * 0.33)
-
-                PlayerMovesView(
-                    playerName: "Magnus Carlsen",
-                    moves: viewModel.blackMoves,
-                    remainingTime: timeString(from: rightPlayerSeconds)
-                )
-                .frame(width: 120)
-                .border(Color.blue) // Debug-Rahmen
-                
-                Button(action: {
-                    viewModel.eventObject.game.addMove(from: .A1, to: .A8)
-                    
-                    guard let move = viewModel.eventObject.game.moveHistory.last else {
-                        return
-                    }
-                    
-                    GameStateChangedNotificationCenter.shared.notifyMove(move: move, eventGuid: viewModel.eventObject.guid)
-                }) {
-                    Text("Tap me!")
+        VStack(spacing: 10) {
+            HStack(spacing: 40) {
+                VStack {
+                    Text(viewModel.streamObject.eventObject.players.white.name)
                         .font(.title)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                    List(viewModel.streamObject.movesUntilCurrentTimestamp.filter{ $0.movedPiece.color == .white}) { move in
+                        Text(move.getAlgebraicNotation())
+                    }
+                }
+
+                ChessGame2DView(viewModel: ChessBoard2DViewModel(from: viewModel.streamObject))
+                    .frame(width: 1360 * 0.3, height: 1360 * 0.3)
+                
+                VStack {
+                    Text(viewModel.streamObject.eventObject.players.black.name)
+                        .font(.title)
+                    List(viewModel.streamObject.movesUntilCurrentTimestamp.filter{ $0.movedPiece.color == .black}) { move in
+                        Text(move.getAlgebraicNotation())
+                    }
+                }
+            }
+            
+            HStack {
+                // Fortschrittsanzeige (Slider)
+                Slider(value: Binding(
+                    get: { Double(viewModel.streamObject.currentTimestamp) },
+                    set: {
+                        viewModel.streamObject.currentTimestamp = TimeInterval($0)
+                    }
+                ), in: 0...min(Double(model.currentTime - model.startTime), viewModel.streamObject.moveEventTimes.last ?? 0))
+                .padding(.horizontal, 20)
+
+                Button(action: playPause) {
+                    Image(systemName: viewModel.streamObject.playing ? "pause.fill" : "play.fill")
+                        .font(.title)
                 }
                 .padding()
             }
 
             // PlayerInfoView unterhalb des Schachbretts
             PlayerInfoView(
-                player1: Player(name: "Anton Mustermann", gender: "male", nationality: "Deutschland", age: 27, aktuelleELOZahl: 2300, besteELOZahl: 2400, titel: "Weltmeister 2019", beschreibung: "Schachspieler"),
-                player2: Player(name: "Magnus Carlsen", gender: "male", nationality: "Norwegen", age: 23, aktuelleELOZahl: 2030, besteELOZahl: 2340, titel: "Weltmeister 2023", beschreibung: "Schachspieler")
+                player1: viewModel.streamObject.eventObject.players.white,
+                player2: viewModel.streamObject.eventObject.players.black
             )
             .padding(.top, 10) // Kleiner Abstand nach oben
         }
-        .onReceive(timer) { _ in
-            updateTimer()
-        }
         .padding(.horizontal, 10) // Außenabstand minimiert
         .background(Color.gray.opacity(0.1))
+        .onAppear {
+            model.currentStream = viewModel.streamObject
+        }
     }
 
-    // Timer-Update: Reduziert nur die Zeit des aktiven Spielers
-    func updateTimer() {
-        if isPlayer1Turn {
-            if leftPlayerSeconds > 0 { leftPlayerSeconds -= 1 }
+    func playPause() {
+        if viewModel.streamObject.playing {
+            viewModel.streamObject.pauseStream()
         } else {
-            if rightPlayerSeconds > 0 { rightPlayerSeconds -= 1 }
+            viewModel.streamObject.startStream()
         }
     }
 
@@ -100,6 +108,6 @@ struct ChessGameView: View {
 }
 
 #Preview {
-    let vm = ChessEventViewModel(event: DummyData.generateRandomEvent())
+    let vm = ChessEventStreamViewModel(stream: DummyData.generateRandomStream())
     ChessGameView(viewModel: vm)
 }

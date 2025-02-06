@@ -25,8 +25,49 @@ class ChessEventStream {
     /// Timestamps for the moves that happen in the streamed chess game, starting from Timestamp 00:00 of the video stream
     var moveEventTimes: [TimeInterval] = []
     
+    var movesUntilCurrentTimestamp: [ChessMove] {
+        let moveCount = moveEventTimes.count { $0 < currentTimestamp }
+        let moves = Array(eventObject.game.moveHistory[..<moveCount])
+        return moves
+    }
+    
+    private var clockTimer: Timer?
+    
     init(event: ChessEvent, liveStreamUris: [URL]? = nil) {
         self.eventObject = event
         self.liveStreamUris = liveStreamUris
+    }
+    
+    deinit {
+        self.removeTimer()
+    }
+    
+    func startStream() {
+        self.playing = true
+        guard clockTimer == nil else { return }
+        self.clockTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            
+            let movesMadeBefore: [ChessMove] = self.movesUntilCurrentTimestamp
+            self.currentTimestamp += 1
+            let movesMadeAfter: [ChessMove] = self.movesUntilCurrentTimestamp
+            
+            let newMoves: [ChessMove] = Array(movesMadeAfter.dropFirst(movesMadeBefore.count))
+            
+            newMoves.forEach { move in
+                GameStateChangedNotificationCenter.shared.notifyMove(move: move, eventGuid: self.eventObject.guid)
+            }
+        }
+
+    }
+    
+    func pauseStream() {
+        self.playing = false
+        self.removeTimer()
+    }
+    
+    private func removeTimer() {
+        self.clockTimer?.invalidate()
+        self.clockTimer = nil
     }
 }

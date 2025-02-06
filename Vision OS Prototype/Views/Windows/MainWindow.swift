@@ -17,6 +17,7 @@ struct MainWindow: View {
     var appModel: AppModel
     
     @Environment(\.openWindow) private var openWindow
+    @Environment(AppModel.self) private var model
     
     @State var activeView: AppView = .EventSelection
     
@@ -42,28 +43,20 @@ struct MainWindow: View {
                 }
                 .navigationTitle("Available Chess Events")
                 .navigationDestination(for: UUID.self) { screen in
-                    let event = appModel.availableStreams.map(\.eventObject).first(where: { $0.guid == screen })
-                    if (event == nil) { Text("No matching event found! 🥺") }
+                    let stream = appModel.availableStreams.first(where: { $0.guid == screen })
+                    if (stream == nil) { Text("No matching event found! 🥺") }
                     else {
-                        let vm = ChessEventViewModel(event: event!)
+                        let vm = ChessEventStreamViewModel(stream: stream!)
                         ChessGameView(viewModel: vm)
                     }
                 }
             }
-            
-            Button("Video") {
-                Task {
-                    openWindow(id: "multiview")
-                }
-            }
+//            Button("Video") {
+//                Task {
+//                    openWindow(id: "multiview")
+//                }
+//            }
         }
-    }
-}
-
-struct SettingsScreen: View {
-    var body: some View {
-        Text("Settings Screen")
-            .navigationTitle("Settings")
     }
 }
 

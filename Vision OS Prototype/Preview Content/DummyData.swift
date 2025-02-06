@@ -77,7 +77,8 @@ class DummyData {
     static func generateRandomGame() -> ChessGame {
         let game = ChessGame()
         
-        for i in 0..<Int.random(in: 10...moves.count) {
+//        for i in 0..<Int.random(in: 10...moves.count) {
+        for i in 0...moves.count-10 {
             let move = moves[i]
             game.addMove(from: move.origin, to: move.target)
         }
@@ -142,7 +143,8 @@ class DummyData {
     static func generateRandomStream() -> ChessEventStream {
         let event = generateRandomEvent()
         let stream = ChessEventStream(event: event)
-        var moveTimeStamps = generateRandomIncreasingNumbers(count: event.game.moveHistory.count, limit: event.gameTime - 10)
+//        let moveTimeStamps = generateRandomIncreasingNumbers(count: event.game.moveHistory.count, limit: event.gameTime - 10)
+        let moveTimeStamps = generateRandomIncreasingNumbers(count: event.game.moveHistory.count, limit: event.game.moveHistory.count+1)
         stream.moveEventTimes = moveTimeStamps.map { TimeInterval($0) }
         
         return stream
@@ -159,7 +161,7 @@ class DummyData {
         let game = generateRandomGame()
         let whitePlayer = players[Int.random(in: 0..<players.count)]
         let blackPlayer = players[Int.random(in: 0..<players.count)]
-        let event = ChessEvent(game: game, players: (white: whitePlayer, black: blackPlayer), gameTime: 300)
+        let event = ChessEvent(game: game, players: (white: whitePlayer, black: blackPlayer), gameTime: [300, 600, 1800].randomElement() ?? 300)
         return event
     }
 }
