@@ -135,7 +135,7 @@ class DummyData {
         let event = ChessEvent(game: game, players: (white: ding, black: gukesh), gameTime: 90 * 60) // FIDE has 90 minute time limit (and some more complicated rules that we cannot implement here
         
         let stream = ChessEventStream(event: event, liveStreamUris: defaultVideos.map { $0.url })
-        stream.moveEventTimes = [0, 1, 2, 3, 4, 4.5, 6, 7, 8, 10, 31, 58, 90, 109, 161, 167, 168, 171, 221, 233, 233.5, 235, 236, 238]
+        stream.moveEventTimes = [0, 0, 0, 0, 1, 2, 3, 4, 4.5, 6, 7, 8, 10, 31, 58, 90, 109, 161, 167, 168, 171, 221, 233, 233.5, 235, 236, 238]
         
         return stream
     }
@@ -143,8 +143,7 @@ class DummyData {
     static func generateRandomStream() -> ChessEventStream {
         let event = generateRandomEvent()
         let stream = ChessEventStream(event: event)
-//        let moveTimeStamps = generateRandomIncreasingNumbers(count: event.game.moveHistory.count, limit: event.gameTime - 10)
-        let moveTimeStamps = generateRandomIncreasingNumbers(count: event.game.moveHistory.count, limit: event.game.moveHistory.count+1)
+        let moveTimeStamps = generateRandomIncreasingNumbers(count: event.game.moveHistory.count, limit: 300)
         stream.moveEventTimes = moveTimeStamps.map { TimeInterval($0) }
         
         return stream

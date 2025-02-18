@@ -19,6 +19,8 @@ struct PlayerInfoView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
     
+    @Environment(AppModel.self) private var model
+    
     @State private var isImmersiveSpaceOpen = false
     @State private var isLiveStreamOpen = false
 
@@ -40,15 +42,18 @@ struct PlayerInfoView: View {
                             isImmersiveSpaceOpen.toggle()
                         }
                     }
-                    Button(isLiveStreamOpen ? "Livestream deaktivieren" : "Livestream aktivieren") {
-                        if (isLiveStreamOpen) {
-                            dismissWindow(id: "multiview")
-                        } else {
-                            openWindow(id: "multiview")
+                    if model.currentStream?.liveStreamUris?.count ?? 0 > 0 {
+                        Button("Livestream starten") {
+                            if (isLiveStreamOpen) {
+                                dismissWindow(id: "multiview")
+                            } else {
+                                openWindow(id: "multiview")
+                            }
+                            isLiveStreamOpen.toggle()
                         }
-                        isLiveStreamOpen.toggle()
+                        .opacity(supportsMultipleWindows ? 1 : 0)
+                        .tint(Color(red: 0.98, green: 0.20, blue: 0.35))
                     }
-                    .opacity(supportsMultipleWindows ? 1 : 0)
                 }
 
                 // Player 2: Rechts ausgerichtet

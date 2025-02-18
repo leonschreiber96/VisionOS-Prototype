@@ -36,6 +36,14 @@ class ChessEventStream {
     init(event: ChessEvent, liveStreamUris: [URL]? = nil) {
         self.eventObject = event
         self.liveStreamUris = liveStreamUris
+        
+        StreamScrubbingNotificationCenter.shared.registerPlayPauseHandler(for: self.guid, observer: { newState in
+            if newState == .pause {
+                self.pauseStream()
+            } else {
+                self.startStream()
+            }
+        })
     }
     
     deinit {

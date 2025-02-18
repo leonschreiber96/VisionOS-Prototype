@@ -66,6 +66,7 @@ struct ChessGameView: View {
                     get: { Double(viewModel.streamObject.currentTimestamp) },
                     set: {
                         viewModel.streamObject.currentTimestamp = TimeInterval($0)
+                        StreamScrubbingNotificationCenter.shared.notifyScrub(sender: viewModel.streamObject.guid, to: TimeInterval($0))
                     }
                 ), in: 0...min(Double(model.currentTime - model.startTime), viewModel.streamObject.moveEventTimes.last ?? 0))
                 .padding(.horizontal, 20)
@@ -94,8 +95,10 @@ struct ChessGameView: View {
     func playPause() {
         if viewModel.streamObject.playing {
             viewModel.streamObject.pauseStream()
+            StreamScrubbingNotificationCenter.shared.notifyPlayPause(sender: viewModel.streamObject.guid, newState: .pause)
         } else {
             viewModel.streamObject.startStream()
+            StreamScrubbingNotificationCenter.shared.notifyPlayPause(sender: viewModel.streamObject.guid, newState: .play)
         }
     }
 

@@ -116,10 +116,6 @@ private struct PlayerInfo: View {
                     let seconds = secondsRemaining % 60
                     return String(format: "%02d:%02d", minutes, seconds)
                 }
-                Text(formattedTime)
-                    .font(.system(size: 25))
-                    .monospacedDigit()
-                    .padding(.trailing, 20)
             }
         }
         .background(Color.black)

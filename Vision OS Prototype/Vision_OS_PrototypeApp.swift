@@ -27,7 +27,13 @@ struct Vision_OS_PrototypeApp: App {
         
         
         WindowGroup(id: "multiview") {
-            VideoHomeView(multiviewStateModel: .init(videos: defaultVideos, stream: appModel.currentStream!))
+            VideoHomeView(multiviewStateModel: .init(videos: defaultVideos))
+                .onDisappear {
+                    appModel.showingLiveStream = false
+                }
+                .onAppear {
+                    appModel.showingLiveStream = true
+                }
         }
         .windowResizability(.contentSize)
         .environment(appModel)

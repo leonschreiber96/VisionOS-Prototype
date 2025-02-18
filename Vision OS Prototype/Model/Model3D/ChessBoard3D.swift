@@ -55,17 +55,6 @@ class ChessBoard3D {
                 self.piecesOnBoard.append(ChessPiece3D(piece: piece.type, color: piece.color, location: piece.position, entity: mesh))
             }
         
-//        self.gameObject.board.getAllPieces()
-//            .forEach { piece in
-//                let mesh = self.inventory!.getModel(color: piece.color, type: piece.type)
-//                self.piecesOnBoard.append(ChessPiece3D(piece: piece.type, color: piece.color, location: piece.position, entity: mesh))
-//            }
-        
-//        self.gameObject.moveHistory.forEach { move in
-//            self.applyMove(from: move.origin, to: move.target, duration: 1.0)
-//        }
-        
-        
         let newBounds: BoundingBox = self.boardEntity!.visualBounds(relativeTo: self.boardEntity)
         
         let min: SIMD3<Float> = newBounds.min
@@ -76,6 +65,11 @@ class ChessBoard3D {
         let depth: Float = max.z - min.z
         
         self.boardBounds = (width: width, height: height, depth: depth)
+        
+        GameStateChangedNotificationCenter.shared.registerMoveHandler(eventGuid: self.streamObject.eventObject.guid, observer: { move in
+            print("registered move in 3D board")
+            self.applyMove(move: move, duration: 1.0)
+        })
     }
     
     /**

@@ -14,8 +14,6 @@ class VideoViewModel {
     let viewController: AVPlayerViewController
     var isAddedToMultiview: Bool = false
     
-    var streamObject: ChessEventStream
-    
     let identifier: UUID = UUID()
 
     private let player: AVPlayer
@@ -28,7 +26,7 @@ class VideoViewModel {
 //    }
     
     @MainActor
-    init(video: Video, streamObject: ChessEventStream ) {
+    init(video: Video) {
         let playerController = AVPlayerViewController()
         
         // Enable the multiview experience, along with the default recommended set.
@@ -38,7 +36,8 @@ class VideoViewModel {
         self.viewController = playerController
         self.player = .init(playerItem: video.playerItem)
         self.viewController.player = player
-        self.streamObject = streamObject
+        
+//        self.printi(text: "Init")
         
         self.playPauseHandler = self.player.publisher(for: \.timeControlStatus).sink { [weak self] status in
             guard self != nil else { return }
@@ -55,6 +54,14 @@ class VideoViewModel {
         }
         
         StreamScrubbingNotificationCenter.shared.registerPlayPauseHandler(for: self.identifier, observer: self.playPauseVideo)
+        StreamScrubbingNotificationCenter.shared.registerScrubHandler(for: self.identifier, observer: {timeStamp in
+            Task {
+                await self.scrub(to: timeStamp)
+            }
+        })
+        
+        // Just use any random uuid that is not ours, so the scrub will be registered by this video and executed (this is dirty hack)
+        StreamScrubbingNotificationCenter.shared.notifyScrub(sender: UUID(), to: 20)
     }
     
     deinit {
@@ -96,8 +103,12 @@ class VideoViewModel {
         self.automaticPlayPauseOngoing = true
         self.playPauseSignallingAllowed = false
         
-        if newState == .pause { self.player.pause() }
-        else if newState == .play { self.player.play() }
+        if newState == .pause {
+            self.player.pause()
+        }
+        else if newState == .play {
+            self.player.play()
+        }
         
         self.automaticPlayPauseOngoing = false
 //        printi(text: "FINISHED SETTING \(self.video.title) to \(newState) \(self.player.rate)")
