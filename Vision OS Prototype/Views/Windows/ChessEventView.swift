@@ -24,7 +24,7 @@ struct MovesView: View {
     }
 }
 
-struct ChessGameView: View {
+struct ChessEventView: View {
 //    @StateObject var chessBoard = ChessEventViewModel(ChessEvent())
     
     @ObservedObject public var viewModel: ChessEventStreamViewModel
@@ -48,7 +48,7 @@ struct ChessGameView: View {
                     }
                 }
 
-                ChessGame2DView(viewModel: ChessBoard2DViewModel(from: viewModel.streamObject))
+                ChessBoard2DView(viewModel: ChessBoard2DViewModel(from: viewModel.streamObject))
                     .frame(width: 1360 * 0.3, height: 1360 * 0.3)
                 
                 VStack {
@@ -112,5 +112,5 @@ struct ChessGameView: View {
 
 #Preview {
     let vm = ChessEventStreamViewModel(stream: DummyData.generateRandomStream())
-    ChessGameView(viewModel: vm)
+    ChessEventView(viewModel: vm)
 }

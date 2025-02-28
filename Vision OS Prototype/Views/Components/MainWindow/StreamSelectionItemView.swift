@@ -22,7 +22,7 @@ struct StreamSelectionItemView: View {
             .frame(width: 1360 * 0.3, height: 1360 * 0.05)
 
             ZStack {
-                ChessGame2DView(viewModel: ChessBoard2DViewModel(from: stream))
+                ChessBoard2DView(viewModel: ChessBoard2DViewModel(from: stream))
                     .border(Color(red: 0.98, green: 0.20, blue: 0.35), width: stream.liveStreamUris?.count ?? 0 > 0 ? 8 : 0)
                     .cornerRadius(15)
                 

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChessGame2DView: View {
+struct ChessBoard2DView: View {
     @ObservedObject public var viewModel: ChessBoard2DViewModel
     
     var body: some View {

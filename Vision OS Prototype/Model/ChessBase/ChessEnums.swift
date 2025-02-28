@@ -8,12 +8,6 @@
 
 import Foundation
 
-/// Possible errors that can occur when handling chess game data.
-enum ChessError: Error {
-    case invalidPiece
-    case invalidBoardIndex
-}
-
 /**
  Types of chess pieces. Can be combined with ``PieceColor`` enum by using a logical **OR**, thus creating a unique integer representation for each possible piece type/color combination.
  

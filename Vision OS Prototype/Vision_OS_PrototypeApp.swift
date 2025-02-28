@@ -26,7 +26,7 @@ struct Vision_OS_PrototypeApp: App {
         .environment(appModel)
         
         
-        WindowGroup(id: "multiview") {
+        WindowGroup(id: AppView.VideoStreamWindow.rawValue) {
             VideoHomeView(multiviewStateModel: .init(videos: defaultVideos))
                 .onDisappear {
                     appModel.showingLiveStream = false
@@ -38,8 +38,9 @@ struct Vision_OS_PrototypeApp: App {
         .windowResizability(.contentSize)
         .environment(appModel)
         
-        ImmersiveSpace(id: "ChessBoard3DView"){
-            Orbit()
+        ImmersiveSpace(id: AppView.ChessBoard3D.rawValue){
+            ChessBoard3DView()
+                .placementGestures(initialPosition: Point3D([475, -1200.0, -1200.0]))
                 .environment(appModel)
         }
         .environment(appModel)

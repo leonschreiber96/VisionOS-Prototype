@@ -7,5 +7,8 @@
 
 enum AppView: String {
     case EventSelection = "event_selection",
-         EventView = "event_view"
+         EventView = "event_view",
+         VideoStreamWindow = "video_stream_window",
+         ChessBoard3D = "chess_board_3d"
+        
 }

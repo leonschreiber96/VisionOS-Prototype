@@ -10,7 +10,6 @@ import SwiftUI
 import RealityKitContent
 
 final class ChessBoardEntity : Entity {
-    // MARK: - Internal State
     let stream: ChessEventStream
     
     public var boardBounds: (width: Float, height: Float, depth: Float) = (width: 0.0, height: 0.0, depth: 0.0)
@@ -35,18 +34,6 @@ final class ChessBoardEntity : Entity {
         update(scale: SIMD3(repeating: 0.04), position: .zero)
     }
     
-    // MARK: - Updates
-
-    /// Updates all the entity's configurable elements.
-    ///
-    /// - Parameters:
-    ///   - configuration: Information about how to configure the Earth.
-    ///   - satelliteConfiguration: An array of configuration structures, one
-    ///     for each artificial satellite.
-    ///   - moonConfiguration: A satellite configuration structure that's
-    ///     specifically for the Moon.
-    ///   - animateUpdates: A Boolean that indicates whether changes to certain
-    ///     configuration values should be animated.
     func update(scale: SIMD3<Float>, position: SIMD3<Float>) {
         print("Update")
         // Scale and position the entire entity.

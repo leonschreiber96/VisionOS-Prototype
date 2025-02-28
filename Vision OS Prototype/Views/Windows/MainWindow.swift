@@ -47,7 +47,7 @@ struct MainWindow: View {
                     if (stream == nil) { Text("No matching event found! 🥺") }
                     else {
                         let vm = ChessEventStreamViewModel(stream: stream!)
-                        ChessGameView(viewModel: vm)
+                        ChessEventView(viewModel: vm)
                     }
                 }
             }
