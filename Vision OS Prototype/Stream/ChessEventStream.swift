@@ -7,6 +7,13 @@
 
 import Foundation
 
+/**
+ Represents a stream that belongs to a chess event.
+ 
+ - Contains information about the live streams associated with it
+ - Contains stateful information about the playback state
+ - Contains information about when chess moves were made (→ needed to "travel through time" when scrubbing)
+ */
 class ChessEventStream {
     public let guid: UUID = UUID()
     

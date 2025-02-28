@@ -1,14 +1,9 @@
-/*
-See the LICENSE.txt file for this sample’s licensing information.
-
-Abstract:
-The custom app and scene delegate for retrieving the `UIScene`.
-*/
-
 import UIKit
 
+/// Scene delegate for managing the app's UI scene lifecycle.
 @Observable
 class CustomSceneDelegate: NSObject, UIWindowSceneDelegate {
+    /// Holds a reference to the current scene.
     var scene: UIScene? = nil
 
     func sceneWillEnterForeground(_ scene: UIScene) {
@@ -24,6 +19,7 @@ class CustomSceneDelegate: NSObject, UIWindowSceneDelegate {
     }
 }
 
+/// Application delegate for configuring scene connections.
 class CustomApplicationDelegate: NSObject, UIApplicationDelegate, ObservableObject {
     func application(
         _ application: UIApplication,

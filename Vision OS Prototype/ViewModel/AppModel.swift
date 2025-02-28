@@ -31,6 +31,7 @@ class AppModel {
         return dateTimeString
     }
     
+    // Create dummy data for prototyping purposes, since an actual live stream and game data API doesn't exist yet
     var availableStreams: [ChessEventStream] = [
         DummyData.getPrerecordedGameStream(),
         DummyData.generateRandomStream(),

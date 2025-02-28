@@ -1,13 +1,27 @@
-/*
-See the LICENSE.txt file for this sample’s licensing information.
-
-Abstract:
-A view that displays a thumbnail for a video URL.
-*/
-
 import AVKit
 import SwiftUI
 
+/// `ThumbnailView` is a SwiftUI view that asynchronously generates and displays a thumbnail for a video.
+///
+/// This view attempts to extract a frame from the middle of the video as a representative thumbnail. If the
+/// thumbnail generation is successful, it displays the extracted image. Otherwise, it falls back to a placeholder
+/// with a film icon on a black background. A loading indicator is shown while the thumbnail is being generated.
+///
+/// ## Features:
+/// - Uses `AVAssetImageGenerator` to extract a frame from the middle of the video.
+/// - Displays a placeholder image if the generation fails.
+/// - Runs the thumbnail generation asynchronously to avoid blocking the UI.
+/// - Prevents redundant thumbnail generation if an image is already available.
+///
+/// ## Usage:
+/// ```swift
+/// ThumbnailView(url: videoURL)
+/// ```
+/// where `videoURL` is the URL of the video for which the thumbnail is to be generated.
+///
+/// ## Dependencies:
+/// - `AVKit` for video asset handling.
+/// - `SwiftUI` for UI rendering.
 struct ThumbnailView: View {
     let url: URL
     @State var imageResult: Result<CGImage, Error>?
